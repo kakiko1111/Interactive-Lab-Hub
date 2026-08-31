@@ -3,9 +3,10 @@
 _This project is to be done in teams of 2._
 
 **NAME OF BOTH COLLABORATOR(S) HERE**
+Jacey Hu(ch2296), Serena Tsai(ht534)
 
 **THE MASTERWORK YOU DREW FROM THE HAT:**
-
+The Clapper, Joseph Enterprises, 1985.
 ---
 
 One way to understand greatness is to look to the greats. Just as painters learn
@@ -92,6 +93,17 @@ the interaction*:
 **Describe your masterwork here, in your own words. What is the core interaction
 someone would recognize it by?**
 
+My masterwork: The Clapper, Joseph Enterprises, 1985.
+The Clapper is a sound-activated switch that lets users turn an appliance on or off without walking over to the outlet or pressing any button.
+
+- What inputs are available to the user? What responses does the work give?
+
+The input is a clap, or any sound that resembles a clap. The response can take several forms, the most common being a light turning on or off.
+
+- Who is present, and how does the piece color the relationships between them?
+
+In the commercial for this product, an older woman who is already in bed claps to turn off a warm yellow lamp and the television. It changes the relationship between a person and their room: she no longer has to get out of bed to reach the switch, and she has more control over the space from where she is.
+
 ## Part A. Plan
 
 For your masterwork, reconstruct the interaction as a scene:
@@ -103,14 +115,28 @@ For your masterwork, reconstruct the interaction as a scene:
 - **Activity:** What is happening between the players and the light?
 - **Goals:** What is each player trying to do?
 
+
 **Describe your setting, players, activity, and goals here.**
+- **Setting:** A hospital room in the late evening. There is one patient in bed with a broken leg, a large TV in front of him, and a lamp beside him.
+- **Players:** A patient whose leg is in a cast. He cannot get out of bed.
+- **Activity:** The patient wants to turn the TV on.
+- **Goals:** The patient wants to watch TV without calling a nurse, and to keep some independence over his own room.
 
 Now **sketch a 3 storyboards** of the interaction you are recreating. (The number may depend on the thing you drew, but stretch your thinking!) They
 don't need to be beautiful, but they must capture and communicate not only the behavior of the light, but how it affects
 and the people around it. If you're new to storyboarding, read
 [this explanation](https://www.nngroup.com/articles/storyboards-visualize-ideas/).
 
-**Include pictures of your storyboards here.**
+**Include pictures of your storyboards here.**  
+<img src="images/lab1_storyboard_p1.png" width="30%">
+<img src="images/lab1_storyboard_p2.png" width="30%">  
+<img src="images/lab1_storyboard_p3.png" width="30%">  
+<img src="images/lab1_storyboard_p4.png" width="30%">  
+
+1. Late evening in a hospital room. The patient wants to watch TV, but his leg is in a cast and he can't get out of bed to reach it.
+2. He claps twice from where he is. The TV lights up!
+3. He settles back and watches, without ever calling a nurse.
+<img src="images/lab1_storyboard2and3.jpg">
 
 Use the storyboards to decide what interaction to prototype.
 
@@ -122,12 +148,15 @@ Physically act out the interaction you planned. For now, just pretend the light
 is doing what you've scripted — a person can wave a flashlight, or you can narrate
 it aloud.
 
-**Are there things that seemed better on paper than when acted out?**
+**Are there things that seemed better on paper than when acted out?**  
+Yes. Once we acted out the scene from our storyboard, we realized we had never decided how to turn the TV off. Should it use the same trigger as turning it on? We added a fourth storyboard to show the full cycle: the TV can be both turned on and turned off by clapping.
+**Did new ideas about the piece surface once you were on your feet?**  
+After acting it out, we realized the Clapper gives users more control over their own space, which is what makes it a strong design. Beyond convenience, it also opens up a way for people with limited mobility to interact with a room they can't physically move around in.
+**Are there key moments in the interaction where things could go in a different direction?**  
+Iterate your storyboards to capture key non-sequential aspects of the interaction.  
+There are two moments where the interaction can break down. The first is the pause after a clap: if the light doesn't respond quickly enough, the user gets impatient and claps again, which turns the TV back off right as it comes on. How long is too long? The second is a false trigger: a cough, a knock at the door, or even applause from the TV itself could be mistaken for a clap.
 
-**Did new ideas about the piece surface once you were on your feet?**
-
-**Are there key moments in the interaction where things could go in a different direction?**
-Iterate your storyboards to capture key non-sequential aspects of the interaction. 
+We went back and added Storyboards 2 and 3 to capture these two failure paths, one where the room listens too well, and one where it doesn't listen at all.
 
 ## Part C. Prototype the Light (light first!)
 
@@ -136,7 +165,15 @@ to act as the "light," and use the remote control interface on your computer to
 change that light. Code and setup instructions for the *Tinkerbelle* tool are
 [here](https://github.com/IRL-CT/tinkerbelle) (we invented this tool for
 this lab). If you hit technical trouble, a manually or remotely controlled light
-switch, dimmer, or lamp is a fine substitute.
+switch, dimmer, or lamp is a fine substitute.  
+<img src="images/Tinkerbell.png" width="30%">  
+We used only two states: black for the TV being off, and a pale yellow for the
+TV being on. The pale yellow stands in for the glow a screen throws into a dark
+room, which is what the patient actually sees from his bed at night, he doesn't
+look at the TV so much as he notices the room change color. We left about a
+one-second delay between the clap and the switch, so the light feels like it is
+responding to him rather than reading his mind. That delay also turned out to be
+the exact gap that makes a user wonder whether the device heard them at all.
 
 **Get the light interaction working before anything else.** Your grade this week
 rides on the *light* being recognizable — the color, the rhythm, the timing, the
@@ -151,8 +188,16 @@ Set up a "wizard" arrangement so one person can secretly drive the light while
 another acts with it — this is how you make the device feel alive without
 building any real electronics. (Zoom works well for recording; you can pin the
 video feed of whichever scene you want to capture.)
+**Include your first attempts at recording the wizarded set-up here.**  
+<img src="images/lab1_storyboard_recordsetting.JPG" width="80%">  
+The wizard stood behind the couch, out of frame. She couldn't see the actor's
+hands from there, but she could hear the clap clearly, and switched the light
+the moment she heard it. Listening turned out to be enough, the Clapper responds
+to sound, so the wizard was doing exactly what the real device would do.
+The main problem we ran into was filming. With one person acting and one person
+wizarding, there was nobody left to hold the camera, so we had to ask a third
+person to shoot for us in order to get the whole room in frame.
 
-**Include your first attempts at recording the wizarded set-up here.**
 
 ## Part E. (optional) Costume the Device
 
@@ -172,13 +217,18 @@ and calm for a bedroom?
 
 **Record your prototyped interaction as a video sketch.** Aim for the bar from
 the top of this lab: a viewer who knows the piece should recognize it; a viewer
-who doesn't should come away understanding what it's famous for. How might you illustrate the non-sequential aspects of the interaction in the sketch?
-
+who doesn't should come away understanding what it's famous for. How might you illustrate the non-sequential aspects of the interaction in the sketch?  
 **Include your video here.**
+Video Link :https://drive.google.com/file/d/1sz4cS_P7qScJjlgcyHWM9oJqxtC2AbK6/view?usp=sharing  
 
 **Please indicate who you collaborated with on this lab.** Be generous in
 acknowledging their contributions, and credit any other influences (YouTube,
 Github, Twitter, a friend who lent you a lamp) that informed your recreation.
+
+I worked on this lab with Serena Tsai (ht534). We developed the concept together.
+Serena set up Tinkerbelle and played the patient on camera, I storyboarded the scene, planned the shots, and drove the light as the wizard. We referenced the original Clapper commercial for the pacing of the clap and the way the light
+answers it.
+
 
 ---
 
