@@ -1,5 +1,10 @@
 # Interactive Prototyping: The Clock of Pi
-**NAMES OF COLLABORATORS HERE** Edmond Kong (eck67) Gabriela Yaulli Herrera (cgy4) Jacey Hu (ch2296)
+
+**NAMES OF COLLABORATORS HERE**
+
+- Edmond Kong (eck67)
+- Gabriela Yaulli Herrera (cgy4)
+- Jacey Hu (ch2296)
 
 Does it feel like time is moving strangely during this semester?
 
@@ -158,9 +163,11 @@ You can look in `image.py` for an example of how to display an image on the scre
 
 \*\*\***Include a picture of your own Raspberry Pi displaying the piscreen.service with your unique MAC address. Additionally, please provide another picture showing the successful completion of the screen test.**\*\*\*
 
+*piscreen.service with IP and MAC address*
+
 <img src="piscreen_mac.jpg" height="400" />
 
-Successful screen test:
+*Successful screen test*
 
 <img src="screen_test.jpg" height="400" />
 
@@ -168,6 +175,10 @@ Successful screen test:
 ## Part D. 
 ### Set up the Display Clock Demo
 Work on `screen_clock.py`, try to show the time by filling in the while loop (at the bottom of the script where we noted "TODO" for you). You can use the code in `cli_clock.py` and `stats.py` to figure this out.
+
+*`screen_clock.py` showing the date and time on the MiniPiTFT*
+
+<img src="clock.jpg" height="400" />
 
 ### How to Edit Scripts on Pi
 Option 1. One of the ways for you to edit scripts on Pi through terminal is using [`nano`](https://linuxize.com/post/how-to-use-nano-text-editor/) command. You can go into the `screen_clock.py` by typing the follow command line:
@@ -178,10 +189,10 @@ You can make changes to the script this way, remember to save the changes by pre
 
 Option 2. Another way for you to edit scripts is to use VNC on your laptop to remotely connect your Pi. Try to open the files directly like what you will do with your laptop and edit them. Since the default OS we have for you does not come up a python programmer, you will have to install one yourself otherwise you will have to edit the codes with text editor. [Thonny IDE](https://thonny.org/) is a good option for you to install, try run the following command lines in your Pi's ternimal:
 
-  ```
+```
   pi@raspberrypi:~ $ sudo apt install thonny
   pi@raspberrypi:~ $ sudo apt update && sudo apt upgrade -y
-  ```
+```
 
 Now you should be able to edit python scripts with Thonny on your Pi.
 
@@ -200,34 +211,36 @@ We strongly discourage literal digital or analog clock display: Be creative.
 
 ** Insert ideas, sketches, [Verplank diagrams](https://ccrma.stanford.edu/courses/250a-fall-2004/IDSketchbok.pdf)), storyboards for your ideas **
 
-All three ideas below drop the hands-and-numbers face entirely. Instead of reading a time off the screen, you read a picture that has changed — the clock tells you where you are in the hour, the day, or the week by how much of something has accumulated or disappeared.
+All three ideas below drop the hands-and-numbers face entirely. Instead of reading a time off the screen, you read a *picture that has changed*. The clock tells you where you are in the hour, the day, or the week by how much of something has accumulated or disappeared.
 
-### Idea 1 — Flower Clock
-A single flower shows three things at once:
-
-1. Petals: At midnight the flower has zero petals. One petal is added every hour, so the flower grows fuller as the day goes on and is at its fullest just before midnight, when it resets.
-2. Background color: The backdrop shifts between a bright daytime color and a dark night blue depending on how bright it actually is outside. This can be determined by a light sensor.
-3. Flower center: The center of the flower carries a small symbol to communicate the weather. A sun means its sunny, clouds for cloudy weather, and raindrops for rain.
+### Idea 1: Flower Clock
 
 <img src="idea1.JPG" height="600" />
 
-### Idea 2 — Weekly View
+A single flower shows three things at once:
 
-Instead of a single day, the whole week is on screen at once. Seven bars sit in a row labeled M through Su, and each bar's height shows how much of that day has passed. A completed day is a full-height bar, the current day is partially filled, and days that haven't happened yet are empty. Background color and a small corner icon carry day/night and weather, the same way they do in Idea 1.
+1. **Petals:** At midnight the flower has zero petals. One petal is added every hour, so the flower grows fuller as the day goes on and is at its fullest just before midnight, when it resets.
+2. **Background color:** The backdrop shifts between a bright daytime color and a dark night blue depending on how bright it actually is outside. This can be determined by a light sensor.
+3. **Flower center:** The center of the flower carries a small symbol to communicate the weather. A sun means it's sunny, clouds for cloudy weather, and raindrops for rain.
+
+### Idea 2: Weekly View
 
 <img src="idea2.JPG" height="600" />
 
-### Idea 3 — Weekend Countdown
+Instead of a single day, the whole week is on screen at once. Seven bars sit in a row labeled M through Su, and each bar's height shows how much of that day has passed. A completed day is a full-height bar, the current day is partially filled, and days that haven't happened yet are empty. Background color and a small corner icon carry day/night and weather, the same way they do in Idea 1.
+
+### Idea 3: Weekend Countdown
+
+<img src="idea3.JPG" height="600" />
 
 A face sits behind five "prison bars," one per weekday. The bars disappear one at a time as the weekdays pass. So the face is fully caged at Monday 12:00am, half-visible by Wednesday evening, and completely free from Saturday 12am through Sunday 11:59pm. During the weekend the face finally gets to smile.
 
 
 **Put the names of the people you gave feedback to here. (Even better, add links to their repos here!)**
 
-- **Aurora Jiaxin Shen**: [repo] https://github.com/aurorajxshen/Interactive-Lab-Hub/tree/Fall2026/Lab%202
-- **Max**: [repo] https://github.com/mc3223/Peppers-Ghost?fbclid=PAVERFWAUdcmNwZG9mAmZkaWQWUO0pEiuHKH27gjsGWuruLoaMeBAS7WV4dG4DYWVtAjEwAHNydGMGYXBwX2lkDzEyNDAyNDU3NDI4NzQxNAABp5ykoIXFHv0jN87V1rwYUfqspiAPFj4ljFSSgx0zcMB3nsPGK0jwLoUYV2Mf_aem_PFvJsQyj4ONTxplNUPKnKg
-- **Serena**:[repo] https://github.com/ht534-ui/Interactive-Lab-Hub/tree/Fall2026/Lab%202  
-
+- **Max Corkran**: [repo](https://github.com/mc3223/Peppers-Ghost)
+- **Aurora Jiaxin Shen**: [repo](https://github.com/aurorajxshen/Interactive-Lab-Hub/tree/Fall2026/Lab%202)
+- **Serena Tsai**: [repo](https://github.com/ht534-ui/Interactive-Lab-Hub/tree/Fall2026/Lab%202)
 
 # Lab 2 Part 2
 
@@ -236,12 +249,20 @@ A face sits behind five "prison bars," one per weekday. The bars disappear one a
 1. Pick up remaining parts for kit on Wednesday lab class. Check the updated [parts list inventory](partslist.md) and let the TA know if there is any part missing.
 
 2. Look at and give feedback on the Part E. for at least 3 other people in the class and get 3 people to comment on your Part E!)
+
 **Put the feedback for your ideas here.**
-- From Aurora: I really like the idea of visualizing time in shape as rounded flower petals, and having the background as hints for the weather conditions, maybe the petal number can be multiples of 12 so that it matches the time in a more explicit way? And I love the weekend countdown idea! It gives emotional resonance with the faces, I’d use that to count down my work days.  
 
-- From Max: I love the weekend countdown prison bars idea. It’s humorous in a rebellious sort of way, I think if you lean into the humor as much as possible there, then it’s certainly something I would use haha, even put on my desk at work if I were feeling brave  
+- **Max Corkran** ([repo](https://github.com/mc3223/Peppers-Ghost))
 
-- From Serena: I really like Idea 3 — Weekend Countdown! I think it uses a really interesting and humorous way to show how much of the week has passed, and it represents people’s mood of waiting for the weekend to come really well.  My only suggestion would be to think more about how users could interact with the clock through the buttons. Adding some button interactions could make the experience even more fun and engaging!
+  I love the weekend countdown prison bars idea. It's humorous in a rebellious sort of way, I think if you lean into the humor as much as possible there, then it's certainly something I would use haha, even put on my desk at work if I were feeling brave.
+
+- **Aurora Jiaxin Shen** ([repo](https://github.com/aurorajxshen/Interactive-Lab-Hub/tree/Fall2026/Lab%202))
+
+  I really like the idea of visualizing time in shape as rounded flower petals, and having the background as hints for the weather conditions, maybe the petal number can be multiples of 12 so that it matches the time in a more explicit way? And I love the weekend countdown idea! It gives emotional resonance with the faces, I'd use that to count down my work days.
+
+- **Serena Tsai** ([repo](https://github.com/ht534-ui/Interactive-Lab-Hub/tree/Fall2026/Lab%202))
+
+  I really like Idea 3, Weekend Countdown! I think it uses a really interesting and humorous way to show how much of the week has passed, and it represents people's mood of waiting for the weekend to come really well. My only suggestion would be to think more about how users could interact with the clock through the buttons. Adding some button interactions could make the experience even more fun and engaging!
 
 ## Update your Lab Hub
 
@@ -249,23 +270,17 @@ A face sits behind five "prison bars," one per weekday. The bars disappear one a
 
 ## Modify the barebones clock to make it your own
 
-Start small, pick just one element of your overall idea, just to show you have a handle on the code and components.
+We started off by making a smiley face in the Pi display, and we eventually added the prison bars on top in our final iteration.
 
 \*\*\***Put a copy of your code in your Lab 2 Github repo.**\*\*\*
+
+`smiley.py` draws just the weekend smiley face from `jail.py`, with no bars and no clock. 
 
 ## Make a short video of your modified barebones PiClock
 
 \*\*\***Take a video of your barely modified PiClock.**\*\*\*
 
-After you edit and work on the scripts for Lab 2, the files should be upload back to your own GitHub repo! You can push to your personal github repo by adding the files here, commiting and pushing.
-
-```
-(venv) pi@raspberrypi:~/Interactive-Lab-Hub/Lab 2 $ git add .
-(venv) pi@raspberrypi:~/Interactive-Lab-Hub/Lab 2 $ git commit -m 'your commit message here'
-(venv) pi@raspberrypi:~/Interactive-Lab-Hub/Lab 2 $ git push
-```
-
-After that, Git will ask you to login to your GitHub account to push the updates online, you will be asked to provide your GitHub user name and password. Remember to use the "Personal Access Tokens" you set up in Part A as the password instead of your account one! Go on your GitHub repo with your laptop, you should be able to see the updated files from your Pi!
+[Modified PiClock video](modifiedclock.MOV)
 
 ## Now, make your own PiClock
 
@@ -276,11 +291,14 @@ Do take advantage of having done the previous iteration to refine and simplify y
 
 \*\*\***Put a copy of your code in your Lab 2 Github repo.**\*\*\*
 
+Please look at `jail.py` for the code. `fast_jail.py` was used to speed up the clock in order to show the clock moving in the video.
+
 \*\*\***Take a video of your PiClock.**\*\*\*
 
+[PiClock video](final_video.mp4)
 
-As always, make sure you document contributions and ideas from others (and AI) explicitly in your writeup.
+\*\*\***Contributions**\*\*\*
 
-You are permitted (but not required) to work in groups and share a turn in; you are expected to make equal contribution on any group work you do, and N people's group project should look like N times the work of a single person's lab.  Make sure the page for the group turn in is linked to your personal Interactive Lab Hub page. 
+All members contributed equally to the assignment. Filming of the videos and idea generation was done through group discussions.
 
-
+The files `jail.py` and `fast_jail.py` were written with AI assistance. Audio used for the PiClock videos is used for educational purposes only.
