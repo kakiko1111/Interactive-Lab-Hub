@@ -1,7 +1,7 @@
 # Chatterboxes
 
 **NAMES OF COLLABORATORS HERE**
-
+Jacey Hu (ch2296)
 [![Watch the video](https://user-images.githubusercontent.com/1128669/135009222-111fe522-e6ba-46ad-b6dc-d1633d21129c.png)](https://youtu.be/LZ0VJClIlRI?si=Yy84mcyVYuVV19mn)
 
 In this lab, we want you to design interaction with a speech-enabled device — something that listens and talks to you. This device can do anything *but* control lights (since we already did that in Lab 1). First, we want you to storyboard what you imagine the conversational interaction to be like. Then you will use wizarding techniques to elicit examples of what people might say, ask, or respond. We then want you to use the examples collected from at least two other people to inform the redesign of the device.
@@ -111,6 +111,8 @@ The demo script also shows `--output-raw`, which streams audio to the speaker as
 
 \*\***Then answer: Is the same greeting, in these different voices, the same greeting? Describe one concrete way the voice changed what the utterance seemed to mean or who seemed to be speaking.**\*\*
 
+The words were exactly the same, but they didn't feel like the same greeting. Piper (my greet.sh) sounded the most like a real person, and it was the most comfortable to listen to. It felt like someone was actually want to welcoming me. espeak was clearly a robot, but it wasn't bad. It sounded more like a system notification than a greeting. Festival was the strangest. It had almost no pitch change, so it sounded like a cartoon robot.
+
 ## B. Speech to Text
 
 We use [faster-whisper](https://github.com/SYSTRAN/faster-whisper), a reimplementation of OpenAI's Whisper model that runs several times faster on CPU and does not require PyTorch. All processing happens on the Pi; nothing is sent to a server.
@@ -130,9 +132,36 @@ The transcript is not the interesting output here — the timings are. Run it ag
 Available sizes, smallest first: `tiny.en`, `base.en`, `small.en`, `medium.en`. The `.en` variants are English-only and faster than their multilingual counterparts at the same size.
 
 \*\***Record a few seconds of your own speech (`arecord -d 5 -f cd -c 1 -r 16000 test.wav`) and transcribe it with at least two model sizes. Report the real-time factor for each. At what point does the accuracy improvement stop being worth the delay, for a system that has to answer you?**\*\*
+I recorded myself saying "I have 16 pieces of fried chicken for dinner." The recording was 7 seconds. Then I tried three model sizes.
 
-\*\***Write your own script that verbally asks for a numerical input (a phone number, zipcode, number of pets) and records the answer the respondent provides.**\*\* Numbers are a good stress test — transcription systems make characteristic errors on digit strings, and you will want to know what they are before you design around them.
+| Model | Transcript | Transcription time | Real-time factor |
+|---|---|---|---|
+| tiny.en | I have 16 pizzas for chicken for dinner. | 1.06s | 0.15x |
+| base.en | I have 16 pieces fried chicken for dinner. | 1.95s | 0.28x |
+| small.en | I have 16 pieces fried chicken for dinner. | 5.65s | 0.81x |
 
+tiny.en was the fastest, but it got some words wrong. It heard "pieces fried" as "pizzas for," so now I have 16 pizzas. base.en and small.en both got it right, and their results were the same. But small.en was almost 3 times slower.
+
+I think base.en is the best choice. It fixed tiny's mistake and only took about 1 second more. small.en was not more accurate, it was just slower. 
+
+\*\***Write your own script that verbally asks for a numerical input (a phone number, zipcode, number of pets) and records the answer the respondent provides.**\*\* Numbers are a good stress test — transcription systems make characteristic errors on digit strings, and you will want to know what they are before you design around them.  
+
+My script `ask_zip.py` asks "What is your five digit zip code?" with Piper, records 5 seconds, transcribes it with base.en, and pulls out the digits. Then it says the zip code back to me and saves the result to `zip_answers.csv`.
+
+I tried it four times and said the number in different ways.
+
+| Try | What I said | Transcript | Digits | Result |
+|---|---|---|---|---|
+| 1 | 10005 (a wrong zip on purpose) | 1,000,5. | 10005 | Accepted |
+| 2 | 1004 (only 4 digits on purpose) | 1.0.0.4. | 1004 | Rejected |
+| 3 | one oh oh four four | 1 0 0 4 it 4 | 10044 | Accepted |
+| 4 | one zero zero four four | 1, 0, 0, 4, 4. | 10044 | Accepted |
+
+The model heard the right digits every time. The problem was the format. The same kind of answer came back with commas, periods, or spaces. In try 1 it wrote "1,000,5" like a big number. So I can't use the transcript directly. My script has to pick out the digits first.
+
+Saying "oh" instead of "zero" also worked, but in try 3 the model added a random word "it." "Zero" was cleaner.
+
+The length check caught try 2 because it only had 4 digits. But it can't catch try 1. 10005 looks like a real zip code, it's just not mine. The script has no way to know that. That's why it reads the number back, so the person can hear it and fix it.
 ## C. Turn-taking: knowing when someone has stopped talking
 
 Everything so far has worked on fixed audio files. A real conversational device does not get told when to start and stop recording — it has to decide. This is the problem that makes speech interfaces hard, and it is mostly not a speech recognition problem.
@@ -153,7 +182,19 @@ Speak, pause, and watch it transcribe. Now change the endpointing threshold — 
 
 \*\***Try both extremes, and something in between. Describe what each one feels like to talk to. Note specifically: at 0.2s, what kinds of normal speech get cut off? At 1.5s, what does the delay make the system seem like?**\*\*
 
-There is no correct value. A system that takes drink orders and a system that listens to someone think out loud want very different thresholds, and the right one depends on what your users are doing with their pauses.
+There is no correct value. A system that takes drink orders and a system that listens to someone think out loud want very different thresholds, and the right one depends on what your users are doing with their pauses.  
+
+I said the same three things each time: "I'd like a large coffee... um... with oat milk," "My phone number is 917... 555... 0123," and "Yes." I paused where the dots are.
+
+**0.2s:** It felt very impatient. It cut me off every time I took a breath or paused a little. "A large coffee with oat milk" became "have light and light coffee" and "We saw milk." My phone number got split into pieces, and "555" came out as "Bye, bye, bye." Short answers like "Yes" were fine.
+
+**0.4s (default):** Still cut me off at the "um." "Oat milk" became "Oh, muke," and "555" became "Bye" again.
+
+**0.7s:** A little better, but it still split my sentences at the pauses.
+
+**1.5s:** It felt patient, like it was really waiting for me to finish. It got the full coffee order right except "old milk." But it also put my coffee order and my phone number together as one long turn. It couldn't tell the difference between me pausing to think and me being done.
+
+The biggest thing I noticed is that cutting speech into small pieces also made the transcripts worse. When the model heard the whole sentence, it had more context and made fewer mistakes. When "555" was by itself, it didn't know it was part of a phone number, so it guessed "Bye." So the silence setting doesn't just change how the device feels. It changes what the device understands.
 
 ### The complete loop
 
