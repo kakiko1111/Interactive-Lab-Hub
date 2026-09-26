@@ -207,15 +207,40 @@ The biggest thing I noticed is that cutting speech into small pieces also made t
 ## D. Storyboard
 
 Storyboard and/or use a Verplank diagram to design a speech-enabled device. (Stuck? Make a device that talks for dogs. If that is too stupid, find an application that is better than that.)
-
-<img src="/images/storyboard.jpeg" height="500" />
-
-
 \*\***Post your storyboard and diagram here.**\*\*
 
+<img src="images/storyboard.jpeg" height="500" />
+
+
+
 Write out what you imagine the dialogue to be. Use cards, post-its, or whatever method helps you develop alternatives or group responses.
+**Dialogue script**
+
+**Dialogue script (main path)**
+
+| # | Speaker | Line | Device wait before responding |
+|---|---|---|---|
+| 1 | Device | It's too hot over here. Can you turn me around? | (unprompted, triggered by light sensor) |
+| 2 | Device | Aaaaaa... | 2s after line 1, if no one responds |
+| 3 | User | (notices) Which way? | — |
+| 4 | Device | (silent. It doesn't know.) | — |
+| 5 | User | (turns the pot) Is this better? | — |
+| 6 | Device | Yes! Much better. | 0.4s |
+| 7 | Device | ...I'm also kind of thirsty. | 1.2s after line 6 |
+| 8 | User | (pours water) | — |
+| 9 | Device | Yeah! Thank you. | 0.4s, triggered by moisture sensor |
 
 \*\***Please describe and document your process.**\*\*
+
+My first idea was a talking fridge. It would warn you about food that is going bad, but in a rude way, like "your apple is stinky" or "your soup sucks." It could also tell a dad joke when you put vegetables in. I liked that it had a personality, but it was mostly a joke machine. The fridge didn't really need to talk to do its job.  
+
+Then I thought about a plant. I am a plant killer. My plants die because they can't talk, so I forget they exist. A plant that can ask for things is more useful than a fridge that makes fun of me, and the interaction is the opposite of a normal assistant. 
+
+I only made one version of the storyboard. I thought about the scene in my head and then drew it directly. Writing the dialogue out afterwards is where I found the problems.  
+
+The first thing I noticed is that I skipped a line. In my storyboard the plant asks to be turned around, the user asks "Which way?", and then the user is already turning the pot. The plant never answers. At first I thought this was just a mistake in my drawing, but then I realized the plant doesn't know the answer. It only has a light sensor. It knows one side is too bright, not that the window is on the left. The user has to guess and try turning it, and the plant only reacts once the light changes. That turned the interaction into guessing game instead of a command.  
+
+The second thing is the timing. I set most of the pauses to 0.4s because that is the default, but from Part C I know 0.4s cuts me off whenever I say "um" or stop to think. In this script the user is doing something physical between lines, turning the pot or pouring water, so they will pause a lot. 0.4s is too short for that. 
 
 Your script should include the pauses. Where does your device wait, and for how long? You now know from Part C that this is a parameter you have to choose, not something that happens for free.
 
