@@ -208,6 +208,9 @@ The biggest thing I noticed is that cutting speech into small pieces also made t
 
 Storyboard and/or use a Verplank diagram to design a speech-enabled device. (Stuck? Make a device that talks for dogs. If that is too stupid, find an application that is better than that.)
 
+<img src="/images/storyboard.jpeg" height="500" />
+
+
 \*\***Post your storyboard and diagram here.**\*\*
 
 Write out what you imagine the dialogue to be. Use cards, post-its, or whatever method helps you develop alternatives or group responses.
