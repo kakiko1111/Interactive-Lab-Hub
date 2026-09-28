@@ -250,6 +250,20 @@ Find a partner, and *without sharing the script with your partner* try out the d
 
 \*\***Describe if the dialogue seemed different than what you imagined when it was acted out, and how.**\*\*
 
+Three things came out different from what I imagined.
+
+When the plant said "can you turn me around," my partner's first reaction was to ask which way she should turn it. I planned for this in Part D. I made the plant stay silent there because it only has a light sensor, so it really doesn't know where the window is. On paper that felt honest. In the room it just felt broken. She asked and then waited, and the silence didn't tell her anything. She thought the device was not working.
+
+Then she started turning the plant, but she didn't know if that was right. My script has the plant say "Yes! Much better" only after she finishes turning. But she stopped in the middle and looked at me, because nothing happened. The reaction needs to be more immediate. She needs to hear something while she is turning, not after.
+
+Watering was the same problem. She poured the water, and she didn't know when to stop. The plant only says "Yeah! Thank you" at the end, so there was a long part where she was just pouring and waiting. She kept looking at me to check. A plant that can't say "that's enough" is a plant you can drown.
+
+All three are the same thing. I designed the plant to react after the action is done, but turning a pot and pouring water both take time, and the person needs to know if they are doing it right in the middle. Speech is not good for this. A sentence takes one or two seconds, and talking while she is moving the pot feels weird.
+
+For Part 2 I want to use sound or the LED for this part instead. Something that changes as the light or the water gets closer to what the plant wants, so it becomes more like "warmer, warmer, stop." Then speech is only for starting the conversation and saying thank you, which is what it is actually good at.
+
+[Recording of Part E](https://drive.google.com/file/d/1Vt6QaTxvsfqUOJ7nFwvdDO3Uu-Ml0Pdp/view?usp=drive_link)
+
 
 ---
 
