@@ -1,7 +1,7 @@
 # Chatterboxes
 
 **NAMES OF COLLABORATORS HERE**
-Jacey Hu (ch2296)
+Jacey Hu (ch2296), Edmond Kong (eck67), Gabriela Yaulli (cgy4)
 [![Watch the video](https://user-images.githubusercontent.com/1128669/135009222-111fe522-e6ba-46ad-b6dc-d1633d21129c.png)](https://youtu.be/LZ0VJClIlRI?si=Yy84mcyVYuVV19mn)
 
 In this lab, we want you to design interaction with a speech-enabled device — something that listens and talks to you. This device can do anything *but* control lights (since we already did that in Lab 1). First, we want you to storyboard what you imagine the conversational interaction to be like. Then you will use wizarding techniques to elicit examples of what people might say, ask, or respond. We then want you to use the examples collected from at least two other people to inform the redesign of the device.
@@ -207,12 +207,40 @@ The biggest thing I noticed is that cutting speech into small pieces also made t
 ## D. Storyboard
 
 Storyboard and/or use a Verplank diagram to design a speech-enabled device. (Stuck? Make a device that talks for dogs. If that is too stupid, find an application that is better than that.)
-
 \*\***Post your storyboard and diagram here.**\*\*
 
+<img src="images/storyboard.jpeg" height="500" />
+
+
+
 Write out what you imagine the dialogue to be. Use cards, post-its, or whatever method helps you develop alternatives or group responses.
+**Dialogue script**
+
+**Dialogue script (main path)**
+
+| # | Speaker | Line | Device wait before responding |
+|---|---|---|---|
+| 1 | Device | It's too hot over here. Can you turn me around? | (unprompted, triggered by light sensor) |
+| 2 | Device | Aaaaaa... | 2s after line 1, if no one responds |
+| 3 | User | (notices) Which way? | — |
+| 4 | Device | (silent. It doesn't know.) | — |
+| 5 | User | (turns the pot) Is this better? | — |
+| 6 | Device | Yes! Much better. | 0.4s |
+| 7 | Device | ...I'm also kind of thirsty. | 1.2s after line 6 |
+| 8 | User | (pours water) | — |
+| 9 | Device | Yeah! Thank you. | 0.4s, triggered by moisture sensor |
 
 \*\***Please describe and document your process.**\*\*
+
+My first idea was a talking fridge. It would warn you about food that is going bad, but in a rude way, like "your apple is stinky" or "your soup sucks." It could also tell a dad joke when you put vegetables in. I liked that it had a personality, but it was mostly a joke machine. The fridge didn't really need to talk to do its job.  
+
+Then I thought about a plant. I am a plant killer. My plants die because they can't talk, so I forget they exist. A plant that can ask for things is more useful than a fridge that makes fun of me, and the interaction is the opposite of a normal assistant. 
+
+I only made one version of the storyboard. I thought about the scene in my head and then drew it directly. Writing the dialogue out afterwards is where I found the problems.  
+
+The first thing I noticed is that I skipped a line. In my storyboard the plant asks to be turned around, the user asks "Which way?", and then the user is already turning the pot. The plant never answers. At first I thought this was just a mistake in my drawing, but then I realized the plant doesn't know the answer. It only has a light sensor. It knows one side is too bright, not that the window is on the left. The user has to guess and try turning it, and the plant only reacts once the light changes. That turned the interaction into guessing game instead of a command.  
+
+The second thing is the timing. I set most of the pauses to 0.4s because that is the default, but from Part C I know 0.4s cuts me off whenever I say "um" or stop to think. In this script the user is doing something physical between lines, turning the pot or pouring water, so they will pause a lot. 0.4s is too short for that. 
 
 Your script should include the pauses. Where does your device wait, and for how long? You now know from Part C that this is a parameter you have to choose, not something that happens for free.
 
@@ -223,11 +251,21 @@ Find a partner, and *without sharing the script with your partner* try out the d
 \*\***Describe if the dialogue seemed different than what you imagined when it was acted out, and how.**\*\*
 
 
+When the plant said "can you turn me around," my partner's first reaction was to ask which way she should turn it. I planned for this in Part D. I made the plant stay silent there because it only has a light sensor, so it really doesn't know where the window is. On paper that felt honest. In the room it just felt broken. She asked and then waited, and the silence didn't tell her anything. She thought the device was not working.
+
+Then she started turning the plant, but she didn't know if that was right. My script has the plant say "Yes! Much better" only after she finishes turning. But she stopped in the middle and looked at me, because nothing happened. The reaction needs to be more immediate. She needs to hear something while she is turning, not after.
+
+Watering was the same problem. She poured the water, and she didn't know when to stop. The plant only says "Yeah! Thank you" at the end, so there was a long part where she was just pouring and waiting. She kept looking at me to check. A plant that can't say "that's enough" is a plant you can drown.
+
+
+
+
+[Recording of Part E](https://drive.google.com/file/d/1Vt6QaTxvsfqUOJ7nFwvdDO3Uu-Ml0Pdp/view?usp=drive_link)
+
+
 ---
 
 # Lab 3 Part 2
-
-For Part 2, you will redesign the interaction with the speech-enabled device using the data collected, as well as feedback from part 1.
 
 ## Prep for Part 2
 
@@ -236,41 +274,95 @@ For Part 2, you will redesign the interaction with the speech-enabled device usi
 3. Make a new storyboard, diagram and/or script based on these reflections.
 4. (optional) Integrate [input devices](inputs.md) in the system
 
+<img src="images/storyboard-part2.jpeg" height="400" />
+
 ## Prototype your system
 
-The system should:
-* use the Raspberry Pi
-* use one or more sensors
-* require participants to speak to it
+`voice_runner.py` puts a character on the Mini PiTFT that you control with your
+voice. The only sensor is the microphone. The screen is the only output and there
+is no speech back, because the thing we wanted to fix from Part 1 was that the
+user could not tell what the device had understood, and a reply she has to
+wait for does not solve that.
 
-*Document how the system works.*
+The microphone is read once, in 20ms frames, and each frame feeds **two paths
+that run at completely different speeds.**
+
+| | metric | control | lag |
+|---|---|---|---|
+| fast | loudness (RMS), and onset (normalized spectral flux) | jump | ~30ms |
+| slow | Silero VAD → faster-whisper `tiny.en` | "go", "stop", "jump" | ~1.5s |
+
+The fast path does no recognition at all. It compares each frame's loudness to a
+noise floor measured during the first second, and separately asks how much of
+the frame's spectrum is *new* relative to the frame before it. A clap puts
+energy into every frequency bin at once, so that fraction jumps near 1 and a vowel
+you are already holding scores near 0 no matter how loud it is. Dividing by the
+frame's own magnitude is what lets one fixed threshold work whether you are
+close to the mic or across the room.
+
+The slow path is the Part 1 stack reused: Silero VAD decides when an utterance
+has ended, faster-whisper transcribes it, and the result is matched against
+whole words. It runs on its own thread, because a transcription takes about a
+second and doing it inline would freeze the animation for thirty frames. Both
+paths share one audio stream. Opening a second one on the same capture device
+fails on the Pi.
+
+Speech recognition cannot move the character. During testing,
+we saw 0.4s of capture plus roughly a second of transcription.
+That is fifty times slower than the fast path, and it is not a tuning problem.
+the capture wait exists precisely so the system can be sure you have
+stopped talking. So motion rides the fast path and state changes ride the slow
+one.
+
+**"go" phrase triggers the movement until directed otherwise.** Saying "stop" is itself a sound. If loudness
+drove the running, the word "stop" would re-trigger the gate at the same instant
+it was supposed to halt the character. So "go" turns running on until "stop"
+turns it off, rather than the character running only while noise is present.
+The original design had the user keep humming and moving the character as any
+speech is recognized. But we quickly realized that this is not a very user-friendly
+design.— it is a consequence of adding "stop", and I
+only noticed it once I tried to write the command list down.
+
+**What the screen shows.** Three states — `listening`, `thinking...`,
+`RUNNING` — plus a live input meter with a notch marking the gate the sound has
+to clear, and the last command it recognised with how long that took
+(`heard "go" 1.4s ago`). The meter and the notch together help the user figure out
+why the system does not react to it. If they were too quiet or the audio was unheard,
+they can troubleshoot this as they try do troubleshoot.This is the part that 
+is a direct response to Part 1, where
+silence from the device was indistinguishable from the device being broken.
 
 *Include videos or screencaptures of both the system and the controller.*
 
+[**Demo video**](demovideo.mp4) — `voice_runner.py` running on the Pi. The screen
+shows the character and the live input meter; the terminal shows each command as
+it is recognised, with the lag it took to get there.
+
 ## Test the system
 
-Try to get at least two people to interact with your system. (Ideally, you would inform them that there is a wizard *after* the interaction, but we recognize that can be hard.)
-
-Answer the following:
-
 ### What worked well about the system and what didn't?
-\*\**your answer here*\*\*
+The display int he Rasperry pi worked well and the animation was smooth. The moving bar at the top of the screen that measures audio strength
+was also working as intended. The users could also tell the state in which the device was in, giving them clues of what actions they might need to do. 
+For example, if the device says "listening", they know it is waiting for a command to start it. Another thing that went well was that the users 
+instinctively wanted to make the block jump as an obstacle gets closer.
+
+However, the speech recognition could use some tuning. The "stop" command is hard to get right and users often had to repeat it several times. There
+is no direct feedback that tells the user whether or not the spoken command is actually valid, so they have to keep saying it. Or maybe if the system
+is already processing a "stop" command, it will take it a little too long to do so. So someone would have to react really quickly to an incoming obstacle
+otherwise they will crash into it.
 
 ### What worked well about the controller and what didn't?
-\*\**your answer here*\*\*
+Initially, we thought that the three commands of "go", "stop", and "jump" were simple enough. The commands were easy to explain, though some users
+actually tried words that weren't in the intstruction set such as "move", "no", and "faster". We also saw some users concentrate too much on the noise
+meter instead of the moving block, which led them to crash into obstacles. The noise meter clearly reacts to voice commands so people sometimes would
+crash into incoming obstacles because they are focused on reading and reacting to the noise meter.
 
 ### What lessons can you take away from the WoZ interactions for designing a more autonomous version of the system?
-\*\**your answer here*\*\*
+There should be a clear indication of what the user can do or say to interact with the system. In other words, the intended
+purpose should be self-explanatory so that a user can use their intuition to perform an action. A good feedback system is essential
+because it helps correct unintended behavior. But a feedback system can also raise false positives if we are not careful when tuning it.
 
 ### How could you use your system to create a dataset of interaction? What other sensing modalities would make sense to capture?
-\*\**your answer here*\*\*
+The script already hears everything, so it can save a line every time someone talks: what they said, whether it matched one of the three commands, and how long it took. Two things in that log would be useful. First, the words people tried that aren't in the instruction set. This would tell us what are some frequent commands to add. Second, how often someone says the same thing twice, because that is the moment they stopped believing the device heard them. We can also save the sound itself, so afterwards we can check whether the device misheard the word or if it failed to register for some other reason.
 
-<details>
-  <summary><strong>Submission Cleanup Reminder (Click to Expand)</strong></summary>
-
-  **Before submitting your README.md:**
-  - This readme.md file has a lot of extra text for guidance.
-  - Remove all instructional text and example prompts from this file.
-  - You may either delete these sections or use the toggle/hide feature in VS Code to collapse them for a cleaner look.
-  - Your final submission should be neat, focused on your own work, and easy to read for grading.
-</details>
+For other sensors, a proximity sensor could catch people leaning in closer, which is what they do when they think it missed them. A camera would show whether anyone actually looks at the screen while it says "thinking." And we could log what the screen was showing at each moment and what the device was saying right before the person reacted. Latency and response are two important metrics that can judge the system's performance and accuracy.
