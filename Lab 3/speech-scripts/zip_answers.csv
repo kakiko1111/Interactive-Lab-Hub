@@ -1,0 +1,5 @@
+time,transcript,digits,valid,audio_file
+20260924_001444,"1,000,5.",10005,True,zip_answer_20260924_001444.wav
+20260924_001509,1.0.0.4.,1004,False,zip_answer_20260924_001509.wav
+20260924_001530,1 0 0 4 it 4,10044,True,zip_answer_20260924_001530.wav
+20260924_001621,"1, 0, 0, 4, 4.",10044,True,zip_answer_20260924_001621.wav
