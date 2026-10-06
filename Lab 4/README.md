@@ -18,7 +18,7 @@
 
 ## Lab Overview
 Team: <canvas group name>  
-Members: Full Name (netid, github-handle), ...  
+Members: Jacey Hu (ch2296, kakiko1111)  
 Clock name: <name>
 
 
@@ -144,6 +144,32 @@ Twizzler 10 touched!
 Twizzler 6 touched!
 ```
 
+### Part A: Capacitive Sensing
+<img src="images/cap_sensor_touch.jpg" width="400">
+
+**What I did**
+- Connected the MPR121 capacitive sensor to the Pi with a Qwiic cable.
+- Ran `cap_test.py`. The script keeps running and waits for a touch, so it doesn't stop by itself.
+- Touched the pads with my finger. Each time, the terminal printed "Twizzler X touched!" with the pad number, so the sensor worked on every pad I tried.
+- This showed the board itself works, so any problem with my doll would come from the connection, not the sensor.
+
+**My object: a plush doll**
+- A plush doll isn't conductive, so touching the fabric does nothing.
+- My doll has a metal ring on top, so I tried to use the ring as the touch point.
+- At first nothing happened. I found out I was using a Qwiic-to-pin cable, which isn't meant for touch pads.
+- I haven't connected the ring yet. Next, I'll use copper tape or a paperclip to link the ring to a pad.
+- I wrote a small script (`ring_test.py`) to print the raw value, baseline, and difference for one pad. This will help me see if the connection is good or weak.
+
+**What I learned**
+- Don't touch the pads when the script starts. The sensor sets its baseline at boot.
+- Only the conductive path reacts. To make the doll's body sensitive, I'd need to hide foil inside and connect it to the ring.
+- Idea: two dolls on two pads. Touching both at once could mean "holding hands."
+
+
+
+
+
+
 ---
 
 ### Part B
@@ -222,6 +248,28 @@ Connect it to your pi with Qwiic connector and try running the example script to
 ```
 
 You can go to the [SparkFun GitHub Page](https://github.com/sparkfun/Qwiic_Proximity_Py) to learn more about the sensor and see other examples
+
+### Part B: More Sensors
+<img src="images/apds_proximity.jpg" width="400">
+
+**APDS-9960 (proximity, color, gesture)**
+- First I got `No I2C device at address: 0x39`. I ran `i2cdetect -y 1` and only saw `0x6a`, so I had plugged in the wrong sensor. After switching, it worked.
+- **Proximity:** The value goes from 0 to 255. It gets bigger when my hand gets closer. It isn't a distance in cm. It's how much IR light bounces back, so color and material also matter.
+- **Color:** It prints red, green, blue, and clear (total light). Clear is always the highest. A black object gives low numbers for everything. To tell colors apart, the ratio between R, G, and B matters more than the raw numbers.
+- **Gesture:** I mostly got left and right. Up and down were harder to trigger. The direction depends on how the board is placed, not on how I see it.
+
+**Rotary encoder**
+- Not tested yet. The encoder and its board come separately and need to be soldered first. I'll do this at the soldering station in class or at the MakerLAB.
+
+**Joystick**
+- Not tested yet. I'll test it in the next lab session.
+
+**Distance sensor (VCNL4040)**
+- Not tested yet. I'll test it in the next lab session.
+
+**Takeaway**
+- Most errors were hardware, not code. Checking `i2cdetect` first saves a lot of time.
+- The APDS-9960 looks useful for a dining idea. Proximity could tell when a hand reaches for food, and gesture could let people "order" by waving.
 
 ---
 
