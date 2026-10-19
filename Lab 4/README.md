@@ -633,9 +633,10 @@ Document all the prototypes and iterations you have designed and worked on! Agai
 
 **Looks like:** A bowl sits on a marked spot on the table. A Qwiic distance sensor is held above the bowl on a cardboard arm, looking straight down at the food. A micro servo with a paddle is mounted at the rim of the bowl, at the height where extra food piles up, ready to sweep across the top of the pile and fling the excess off to the right.
 
-![Looks like: full prototype](images/looks_like1.JPG)
-
-![Looks like: sensor arm and servo paddle](images/looks_like2.JPG)
+<p float="left">
+  <img src="images/looks_like1.JPG" alt="Looks like: full prototype" width="350"/>
+  <img src="images/looks_like2.JPG" alt="Looks like: sensor arm and servo paddle" width="350"/>
+</p>
 
 **Works like:** The distance sensor measures how high the food is piled. When the reading stays above the overfill threshold for 1 second, the servo winds up and snaps across the bowl twice at full speed, throwing the excess food out. Once the food level drops back down, the device re-arms and waits for the next overfill. A `--throw` mode triggers the same motion manually for testing and demos.
 
