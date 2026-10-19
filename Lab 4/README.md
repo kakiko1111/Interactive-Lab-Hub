@@ -245,7 +245,7 @@ You can go to the [SparkFun GitHub Page](https://github.com/sparkfun/Qwiic_Proxi
 - **Gesture:** I mostly got left and right. Up and down were harder to trigger. The direction depends on how the board is placed, not on how I see it.
 
 **Rotary encoder**
-- Not tested yet. The encoder and its board come separately and need to be soldered first. I'll do this at the soldering station in class or at the MakerLAB.
+- Not tested in this lab. We focused on the APDS-9960 and the distance sensor for our design.
 
 
 **Takeaway**
