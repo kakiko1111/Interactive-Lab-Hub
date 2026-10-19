@@ -1,6 +1,7 @@
 # Ph-UI!!!
 
 <details>
+
 	<summary><strong>Instructions for Students (Click to Expand)</strong></summary>
   
 	**Submission Cleanup Reminder:**
@@ -10,6 +11,7 @@
 	- Your final submission should be neat, focused on your own work, and easy to read for grading.
   
 	This helps ensure your README.md is clear, professional, and uniquely yours!
+
 </details>
 
 ---
@@ -44,6 +46,10 @@ F) [Final Documentation](#part-f)
 ## Part 1 Lab Preparation
 
 ---
+
+<details>
+
+<summary>Lab instructions</summary>
 
 ### Get the latest content:
 As always, pull updates from the class Interactive-Lab-Hub to both your Pi and your own GitHub repo. As we discussed in the class, there are 3 ways you can do so:
@@ -121,6 +127,8 @@ Option 3: (preferred) use the Github.com interface to update the changes.
 
 
 ---
+
+</details>
 
 ### Part A
 ### Capacitive Sensing, a.k.a. Human-Twizzler Interaction 
@@ -246,7 +254,6 @@ You can go to the [SparkFun GitHub Page](https://github.com/sparkfun/Qwiic_Proxi
 
 **Rotary encoder**
 - Not tested in this lab. We focused on the APDS-9960 and the distance sensor for our design.
-
 
 **Takeaway**
 - Most errors were hardware, not code. Checking `i2cdetect` first saves a lot of time.
@@ -459,8 +466,8 @@ Readings are only valid for the exact sensor and bowl positions they were taken 
 - **The sensor measures reflection, not distance.** Because it measures reflected infrared light, a bumped sensor, a shifted bowl, or food landing in a different spot changed readings as much as the pile height did. Fixing everything in place and recalibrating was essential.
 - **Speed comes from how you command the servo.** Moving in small steps looked smooth but had no force behind it. A single jump to the end position, plus using the servo's full pulse range, turned a wiggle into a throw.
 - **Software has limits.** Once the servo was at its full speed and range, the only way to throw harder was mechanical: a longer, lighter paddle that scoops under the edge of the pile.
-- **Timing makes it playful.** The 1-second hold before reacting makes the bowl feel like it's "noticing" the overfill rather than twitching at every spoon.
-
+- **Timing makes it playful.** The 1-second hold before reacting makes the bowl feel like it's "noticing" the overfill rather than twitching at every spoon.  
+<details><summary>Example and optional extensions</summary>
 #### Example Application: Windmill Coaster
 
 Now that you have explored both sensing and actuation, here is a simple example that combines the two.
@@ -610,6 +617,8 @@ This is a playful way to visualize how the expander works, but the same techniqu
 ---
 
 ---
+
+</details>
 
 ### Part F
 
