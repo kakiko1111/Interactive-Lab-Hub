@@ -143,6 +143,23 @@ These Twizzlers are connected to pads 6 and 10. When you run the code and touch 
 Twizzler 10 touched!
 Twizzler 6 touched!
 ```
+**What I did**
+- Connected the MPR121 capacitive sensor to the Pi with a Qwiic cable.
+- Ran `cap_test.py`. The script keeps running and waits for a touch, so it doesn't stop by itself.
+- Touched the pads with my finger. Each time, the terminal printed "Twizzler X touched!" with the pad number, so the sensor worked on every pad I tried.
+- This showed the board itself works, so any problem with my doll would come from the connection, not the sensor.
+
+**My object: a plush doll**
+- A plush doll isn't conductive, so touching the fabric does nothing.
+- My doll has a metal ring on top, so I tried to use the ring as the touch point.
+- At first nothing happened. I found out I was using a Qwiic-to-pin cable, which isn't meant for touch pads.
+- I haven't connected the ring yet. Next, I'll use copper tape or a paperclip to link the ring to a pad.
+- I wrote a small script (`ring_test.py`) to print the raw value, baseline, and difference for one pad. This will help me see if the connection is good or weak.
+
+**What I learned**
+- Don't touch the pads when the script starts. The sensor sets its baseline at boot.
+- Only the conductive path reacts. To make the doll's body sensitive, I'd need to hide foil inside and connect it to the ring.
+- Idea: two dolls on two pads. Touching both at once could mean "holding hands."
 
 ---
 
@@ -222,6 +239,20 @@ Connect it to your pi with Qwiic connector and try running the example script to
 
 You can go to the [SparkFun GitHub Page](https://github.com/sparkfun/Qwiic_Proximity_Py) to learn more about the sensor and see other examples
 
+**APDS-9960 (proximity, color, gesture)**
+- First I got `No I2C device at address: 0x39`. I ran `i2cdetect -y 1` and only saw `0x6a`, so I had plugged in the wrong sensor. After switching, it worked.
+- **Proximity:** The value goes from 0 to 255. It gets bigger when my hand gets closer. It isn't a distance in cm. It's how much IR light bounces back, so color and material also matter.
+- **Color:** It prints red, green, blue, and clear (total light). Clear is always the highest. A black object gives low numbers for everything. To tell colors apart, the ratio between R, G, and B matters more than the raw numbers.
+- **Gesture:** I mostly got left and right. Up and down were harder to trigger. The direction depends on how the board is placed, not on how I see it.
+
+**Rotary encoder**
+- Not tested yet. The encoder and its board come separately and need to be soldered first. I'll do this at the soldering station in class or at the MakerLAB.
+
+
+**Takeaway**
+- Most errors were hardware, not code. Checking `i2cdetect` first saves a lot of time.
+- The APDS-9960 looks useful for a dining idea. Proximity could tell when a hand reaches for food, and gesture could let people "order" by waving.
+
 ---
 
 ### Part C
@@ -293,7 +324,7 @@ As you develop your Feast Automata concept, consider where the sensor and actuat
 2. **Side-Level Sensing:** The sensor stands beside the bowl at rim height, facing across the top of the food. If the food rises above the rim, the bowl counts as overfilled. A servo at the base of a post on the opposite side swings a paddle up and over the bowl to flick the extra food out.
 3. **Lid Rotate:** The sensor stands beside the bowl, and a round lid is mounted on a post next to it. When the bowl is overfilled, the servo rotates the lid horizontally across the top of the bowl, shaving off anything piled above the rim.
 4. **Tilting Platform:** The bowl sits on a flat platform attached to a servo post at one corner. When the sensor detects an overfill, the servo tilts the platform so the excess food slides off. This sketch helps compare whether moving the bowl feels different from moving a paddle.
-5. **Split Different Color:** A variation that sorts food instead of removing it. Colored candies roll down a chute past a color sensor (APDS-9960). Based on the color it reads, the servo at the base turns the chute to drop each candy into one of two bowls, for example green ones into one bowl and everything else into
+5. **Split Different Color:** A variation that sorts food instead of removing it. Colored candies roll down a chute past a color sensor (APDS-9960). Based on the color it reads, the servo at the base turns the chute to drop each candy into one of two bowls, for example green ones into one bowl and everything else into the other.
 
 **\*\*\*What questions do these sketches raise? What do you need to physically prototype to answer them?\*\*\***
 
