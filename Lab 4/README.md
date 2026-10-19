@@ -17,7 +17,6 @@
 ---
 
 ## Lab Overview
-Team: <canvas group name>  
 Members: Gabriela Yaulli (cgy4, cgyh98), Jacey Hu (ch2296, kakiko1111), Edmond Kong (eck67, edmkong) 
 Project name: Overfill Bowl (Interactive Ozempic)
 
@@ -355,7 +354,7 @@ Build a cardboard or other low-fidelity physical prototype of your design.
   <img src="images/IMG_8250.JPG" width="300"/>
 </p>
 
-[▶ Rough prototype video](VIDEO_LINK_HERE)
+[▶ Rough prototype video](https://drive.google.com/file/d/168DqkK3QYZVppgeB0HJ8btrgvo1hoM7H/view?usp=sharing)
 
 ---
 
