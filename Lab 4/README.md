@@ -1,6 +1,7 @@
 # Ph-UI!!!
 
 <details>
+
 	<summary><strong>Instructions for Students (Click to Expand)</strong></summary>
   
 	**Submission Cleanup Reminder:**
@@ -10,6 +11,7 @@
 	- Your final submission should be neat, focused on your own work, and easy to read for grading.
   
 	This helps ensure your README.md is clear, professional, and uniquely yours!
+
 </details>
 
 ---
@@ -17,9 +19,8 @@
 ---
 
 ## Lab Overview
-Team: <canvas group name>  
-Members: Jacey Hu (ch2296, kakiko1111)  
-Clock name: <name>
+Members: Gabriela Yaulli (cgy4, cgyh98), Jacey Hu (ch2296, kakiko1111), Edmond Kong (eck67, edmkong) 
+Project name: Overfill Bowl (Interactive Ozempic)
 
 
 For lab this week, we focus on both sensing and actuation, bringing new modes of input and output into your devices, while also prototyping the physical structure and overall look of the device. You will consider how the physical form supports sensing and actuation, and how these elements come together to shape the interaction and aesthetics of the device.
@@ -45,6 +46,10 @@ F) [Final Documentation](#part-f)
 ## Part 1 Lab Preparation
 
 ---
+
+<details>
+
+<summary>Lab instructions</summary>
 
 ### Get the latest content:
 As always, pull updates from the class Interactive-Lab-Hub to both your Pi and your own GitHub repo. As we discussed in the class, there are 3 ways you can do so:
@@ -123,6 +128,8 @@ Option 3: (preferred) use the Github.com interface to update the changes.
 
 ---
 
+</details>
+
 ### Part A
 ### Capacitive Sensing, a.k.a. Human-Twizzler Interaction 
 
@@ -143,10 +150,6 @@ These Twizzlers are connected to pads 6 and 10. When you run the code and touch 
 Twizzler 10 touched!
 Twizzler 6 touched!
 ```
-
-### Part A: Capacitive Sensing
-<img src="images/cap_sensor_touch.jpg" width="400">
-
 **What I did**
 - Connected the MPR121 capacitive sensor to the Pi with a Qwiic cable.
 - Ran `cap_test.py`. The script keeps running and waits for a touch, so it doesn't stop by itself.
@@ -164,11 +167,6 @@ Twizzler 6 touched!
 - Don't touch the pads when the script starts. The sensor sets its baseline at boot.
 - Only the conductive path reacts. To make the doll's body sensitive, I'd need to hide foil inside and connect it to the ring.
 - Idea: two dolls on two pads. Touching both at once could mean "holding hands."
-
-
-
-
-
 
 ---
 
@@ -197,8 +195,7 @@ You can go the the [Adafruit GitHub Page](https://github.com/adafruit/Adafruit_C
 
 #### Rotary Encoder 
 
-A rotary encoder is an electro-mechanical device that converts the angular position to analog or digital output signals. The [Adafruit rotary encoder](https://www.adafruit.com/product/4991#technical-details) we ordered for you came with separate breakout board and encoder itself, that is, they will need to be soldered if you have not yet done so! We will be bringing the soldering station to the lab class for you to use, also, you can go to the MakerLAB to do the soldering off-class. Here is some [guidance on soldering](https://learn.adafruit.com/adafruit-guide-excellent-soldering/preparation) from Adafruit. When you first solder, get someone who has done it before (ideally in the MakerLAB environment). It is a good idea to review this material beforehand so you know what to look at.
-
+A rotary encoder is an electro-mechanical device that converts the angular position to analog or digital output signals. The [Adafruit rotary encoder](https://www.adafruit.com/product/4991#technical-details) we ordered for you came pre-soldered, so you do NOT need to solder anything.
 <p float="left">
 
    
@@ -249,9 +246,6 @@ Connect it to your pi with Qwiic connector and try running the example script to
 
 You can go to the [SparkFun GitHub Page](https://github.com/sparkfun/Qwiic_Proximity_Py) to learn more about the sensor and see other examples
 
-### Part B: More Sensors
-<img src="images/apds_proximity.jpg" width="400">
-
 **APDS-9960 (proximity, color, gesture)**
 - First I got `No I2C device at address: 0x39`. I ran `i2cdetect -y 1` and only saw `0x6a`, so I had plugged in the wrong sensor. After switching, it worked.
 - **Proximity:** The value goes from 0 to 255. It gets bigger when my hand gets closer. It isn't a distance in cm. It's how much IR light bounces back, so color and material also matter.
@@ -259,13 +253,7 @@ You can go to the [SparkFun GitHub Page](https://github.com/sparkfun/Qwiic_Proxi
 - **Gesture:** I mostly got left and right. Up and down were harder to trigger. The direction depends on how the board is placed, not on how I see it.
 
 **Rotary encoder**
-- Not tested yet. The encoder and its board come separately and need to be soldered first. I'll do this at the soldering station in class or at the MakerLAB.
-
-**Joystick**
-- Not tested yet. I'll test it in the next lab session.
-
-**Distance sensor (VCNL4040)**
-- Not tested yet. I'll test it in the next lab session.
+- Not tested in this lab. We focused on the APDS-9960 and the distance sensor for our design.
 
 **Takeaway**
 - Most errors were hardware, not code. Checking `i2cdetect` first saves a lot of time.
@@ -298,6 +286,8 @@ python pi_servo_hat_test.py
 ```
 For more details and advanced usage, see the [official SparkFun Servo pHAT documentation](https://learn.sparkfun.com/tutorials/pi-servo-phat-v2-hookup-guide/all#resources-and-going-further).
 A servo motor is a rotary actuator that allows for precise control of angular position. The position is set by the width of an electrical pulse (PWM). You can read [this Adafruit guide](https://learn.adafruit.com/adafruit-arduino-lesson-14-servo-motors/servo-motors) to learn more about how servos work.
+
+**Our servo setup:** We stacked the Servo pHAT on our Raspberry Pi 5 and plugged a 9g micro servo into channel 0 (brown wire to GND). `i2cdetect -y 1` showed the pHAT at `0x40` (plus its all-call address `0x70`). We installed `sparkfun-pi-servo-hat` in the Lab 4 `.venv` and ran `pi_servo_hat_test.py`, which swept the servo between 0° and 120°. The servo moved even with only the Pi powered, but it was drawing from the Pi's 5V rail, so we added a second USB-C cable to the pHAT to power the servo separately.
 
 ---
 
@@ -334,13 +324,44 @@ As you develop your Feast Automata concept, consider where the sensor and actuat
 
 **\*\*\*Draw 5 sketches that explore different physical arrangements for your sensing and actuation.\*\*\***
 
+![Five sketches of the Overfill Bowl](images/LAB4_Sketch.jpeg)
+
+1. **Top-Down Sensing:** An arm holds the distance sensor (VCNL4040) directly above the bowl, facing down, so the reading rises as the food piles higher. A servo at the base of a post on the other side swings a scraper down across the top of the bowl to knock the excess food off.
+2. **Side-Level Sensing:** The sensor stands beside the bowl at rim height, facing across the top of the food. If the food rises above the rim, the bowl counts as overfilled. A servo at the base of a post on the opposite side swings a paddle up and over the bowl to flick the extra food out.
+3. **Lid Rotate:** The sensor stands beside the bowl, and a round lid is mounted on a post next to it. When the bowl is overfilled, the servo rotates the lid horizontally across the top of the bowl, shaving off anything piled above the rim.
+4. **Tilting Platform:** The bowl sits on a flat platform attached to a servo post at one corner. When the sensor detects an overfill, the servo tilts the platform so the excess food slides off. This sketch helps compare whether moving the bowl feels different from moving a paddle.
+5. **Split Different Color:** A variation that sorts food instead of removing it. Colored candies roll down a chute past a color sensor (APDS-9960). Based on the color it reads, the servo at the base turns the chute to drop each candy into one of two bowls, for example green ones into one bowl and everything else into the other.
+
 **\*\*\*What questions do these sketches raise? What do you need to physically prototype to answer them?\*\*\***
 
+- How high above the bowl does the distance sensor need to be to tell a normal bowl from an overfilled one?
+- Will the sensor see the pile reliably if the food lands off-center, or is a different color or texture?
+- Can a 9g micro servo move with enough speed and force to actually throw food?
+- Where does the servo need to sit so its paddle sweeps across the top of the pile without passing under the sensor?
+- Which direction should the food be thrown, and where does it land?
+
 **\*\*\*Pick one design to prototype and explain why.\*\*\***
+
+**Overfill Bowl:** a distance sensor above the bowl watches how high the food is piled. When someone serves too much, a servo paddle flicks the excess out of the bowl. We picked it because it turns a familiar dining moment (taking a bit too much) into a playful, exaggerated reaction, and it uses one sensor and one servo in a direct cause-and-effect interaction that's easy to understand at a glance.
 
 Build a cardboard or other low-fidelity physical prototype of your design.
 
 **\*\*\*Document your rough prototype with photos and/or video.\*\*\***
+
+**In progress:** building the prototype
+
+<p float="left">
+  <img src="images/IMG_8208.JPG" width="300"/>
+  <img src="images/IMG_8209.JPG" width="300"/>
+  <img src="images/IMG_8210.JPG" width="300"/>
+  <img src="images/IMG_8212.JPG" width="300"/>
+  <img src="images/IMG_8213.JPG" width="300"/>
+  <img src="images/IMG_8248.jpg" width="300"/>
+  <img src="images/IMG_8249.JPG" width="300"/>
+  <img src="images/IMG_8250.JPG" width="300"/>
+</p>
+
+[▶ Rough prototype video](https://drive.google.com/file/d/168DqkK3QYZVppgeB0HJ8btrgvo1hoM7H/view?usp=sharing)
 
 ---
 
@@ -380,6 +401,73 @@ See encoder_accel_servo_dashboard.py in the Lab 4 folder for an optional example
 
 **`Lab 4/encoder_accel_servo_dashboard.py`**
 
+#### Our Build: Overfill Bowl
+
+**Interaction pipeline:** food piled too high → distance sensor reading rises past the threshold for 1 s → servo flicks the excess food out of the bowl → food level drops → device re-arms.
+
+```mermaid
+flowchart LR
+    A[Food piled above<br>normal level] --> B[VCNL4040 distance sensor<br>above bowl, facing down]
+    B -->|proximity reading| C{Reading ≥ OVERFILL_THRESHOLD<br>for 1 second?}
+    C -->|no| B
+    C -->|yes| D[Servo flick x2<br>130° → -45° at full speed]
+    D --> E[Excess food thrown out]
+    E --> F{Reading < RESET_THRESHOLD<br>for 1 second?}
+    F -->|yes: re-armed| B
+```
+
+**Hardware**
+
+| Part | Connection |
+|---|---|
+| Raspberry Pi 5 | Powered by its own USB-C supply |
+| SparkFun Servo pHAT (PCA9685, I²C `0x40`) | Stacked on the Pi's GPIO header, powered by a **second** USB-C cable so the servo doesn't draw from the Pi's 5V rail |
+| Micro servo (9g) | Servo pHAT channel 0 (brown = GND, red = V+, orange = PWM) |
+| SparkFun Qwiic Proximity Sensor (VCNL4040, I²C `0x60`) | Qwiic cable to the Servo pHAT's Qwiic port; mounted above the bowl, facing down |
+
+**Code:** [`overfill_bowl.py`](overfill_bowl.py)
+
+```bash
+cd ~/Documents/GitHub/Interactive-Lab-Hub/"Lab 4"
+source .venv/bin/activate
+python overfill_bowl.py               # run the overfill bowl
+python overfill_bowl.py --calibrate   # print sensor readings only
+python overfill_bowl.py --throw       # do the throw once, without the sensor
+```
+
+How the code works:
+- **Sensing:** the VCNL4040 shines infrared light down and measures how much reflects back. Food closer to the sensor (a taller pile) gives a higher reading.
+- **Hysteresis:** the bowl counts as overfilled at `OVERFILL_THRESHOLD` and only re-arms below the lower `RESET_THRESHOLD`, so a reading hovering around one value doesn't make the servo fire over and over.
+- **Hold time:** a reading has to stay past a threshold for `HOLD_TIME = 1.0` s before it counts, so a hand or spoon passing under the sensor doesn't trigger it.
+- **One reaction per overfill:** the servo reacts once each time the bowl becomes overfilled, not continuously.
+- **The throw:** the servo slowly winds up to `WINDUP_ANGLE`, then jumps straight to `FLICK_ANGLE` in a single command (instead of small steps) so it moves at the servo's full speed. This repeats `FLICK_REPEATS = 2` times, then the servo returns home (60°).
+
+**Calibration data** (from `--calibrate`, sensor and bowl fixed in place)
+
+| Sensor position | Normal bowl | Overfilled bowl | Gap | Thresholds used |
+|---|---|---|---|---|
+| Position 1 (closer to food) | ~240 | ~377 | ~137 | overfill 320 / reset 280 |
+| Position 2 (higher) | ~88 | ~100 | ~12 | overfill 96 / reset 92 |
+
+Readings are only valid for the exact sensor and bowl positions they were taken at. Recalibrate whenever either one moves.
+
+#### Iterations
+
+1. **Servo bring-up.** Ran `pi_servo_hat_test.py`. The Pi initially saw nothing on the I²C bus; reseating the Servo pHAT made it appear at `0x40`. The servo also moved with only the Pi powered, but we added the pHAT's own USB-C power as the lab recommends, so servo current spikes can't brown out the Pi 5. `vcgencmd get_throttled` stayed at `0x0` (no under-voltage) through all tests.
+2. **Placeholder motion.** The first version swept the servo back and forth in 3° steps. It was too slow and gentle to move any food.
+3. **Calibration problems.** The first overfilled reading (~80) was *lower* than the normal one (~130), because the sensor and bowl had shifted between measurements. Fixing both in place gave consistent readings (normal ~240, overfilled ~377).
+4. **Fast flick.** Replaced the sweep with a wind-up followed by a single jump to the end position, so the servo moves at full speed. The first flick went the wrong way (0° → 120°), so we reversed it.
+5. **More range.** The throw was still too weak. The `pi_servo_hat` library maps 0–90° to 1–2 ms pulses, but 9g servos accept about 0.5–2.5 ms, so the "0°" end wasn't the servo's real limit. We widened the throw to 130° → -30°, then to 130° → -45° (≈0.5 ms, the servo's limit). At full range the throw cleared the extra food: the sensor reading dropped from ~99 back to ~88 right after the flick.
+6. **Sensor moved higher (position 2).** At this height the normal/overfilled gap shrank to ~12. A slightly overfilled bowl (~81) read the same as a bowl after a throw (~82), so the sensor could no longer detect a slight overfill. We added a `--throw` mode to trigger the motion manually for demos, and the next step is moving the sensor back closer to the food (about 5–10 cm above the pile) and recalibrating.
+
+#### Reflection
+
+- **Sensing depends on physical placement.** The same sensor gave a ~137-point difference between normal and overfilled at one height and only ~12 at another. Where the sensor sits and what it's aimed at mattered more than any code change.
+- **The sensor measures reflection, not distance.** Because it measures reflected infrared light, a bumped sensor, a shifted bowl, or food landing in a different spot changed readings as much as the pile height did. Fixing everything in place and recalibrating was essential.
+- **Speed comes from how you command the servo.** Moving in small steps looked smooth but had no force behind it. A single jump to the end position, plus using the servo's full pulse range, turned a wiggle into a throw.
+- **Software has limits.** Once the servo was at its full speed and range, the only way to throw harder was mechanical: a longer, lighter paddle that scoops under the edge of the pile.
+- **Timing makes it playful.** The 1-second hold before reacting makes the bowl feel like it's "noticing" the overfill rather than twitching at every spoon.  
+<details><summary>Example and optional extensions</summary>
 #### Example Application: Windmill Coaster
 
 Now that you have explored both sensing and actuation, here is a simple example that combines the two.
@@ -530,6 +618,8 @@ This is a playful way to visualize how the expander works, but the same techniqu
 
 ---
 
+</details>
+
 ### Part F
 
 ### Final Documentation
@@ -538,6 +628,23 @@ Document all the prototypes and iterations you have designed and worked on! Agai
 * "Looks like": shows how the device should look, feel, sit, weigh, etc.
 * "Works like": shows what the device can do
 * "Acts like": shows how a person would interact with the device
+
+#### Overfill Bowl: Final Documentation
+
+**Looks like:** A bowl sits on a marked spot on the table. A Qwiic distance sensor is held above the bowl on a cardboard arm, looking straight down at the food. A micro servo with a paddle is mounted at the rim of the bowl, at the height where extra food piles up, ready to sweep across the top of the pile and fling the excess off to the right.
+
+<p float="left">
+  <img src="images/looks_like1.JPG" alt="Looks like: full prototype" width="350"/>
+  <img src="images/looks_like2.JPG" alt="Looks like: sensor arm and servo paddle" width="350"/>
+</p>
+
+**Works like:** The distance sensor measures how high the food is piled. When the reading stays above the overfill threshold for 1 second, the servo winds up and snaps across the bowl twice at full speed, throwing the excess food out. Once the food level drops back down, the device re-arms and waits for the next overfill. A `--throw` mode triggers the same motion manually for testing and demos.
+
+[▶ Works like video: sensor detects the overfilled bowl and the servo throws the food](https://drive.google.com/file/d/12zmTxbjzCw5-qcYsZbCu-Qobcw9N-IEI/view?usp=drive_link)
+
+**Acts like:** Someone serves themselves a little too much. After a second, the bowl "decides" that's too much and flicks the extra food away, a playful and slightly rude reminder about portion size. The person can eat normally or scoop food back in, and the bowl only reacts again if they overfill it again.
+
+[▶ Acts like video: a person serves too much and the bowl reacts](https://drive.google.com/file/d/1zcI5CtQhQWu3Q7nQF4hhUuJ2JaYRUmdB/view?usp=sharing)
 
 ---
 
