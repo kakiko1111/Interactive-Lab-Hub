@@ -245,11 +245,11 @@ House rules: sample rather than stream (one look every 5 to 30 seconds), and kee
 2. **Night palette.** A color sensor records the light in the room all night, and the morning report is a strip of color: the desk lamp, a phone screen at 1 a.m., the blue hour before sunrise. I liked how it handles a quiet night (one flat color is still an honest answer), but it also skips the YOLO part of the pipeline.
 
 3. **Door Watch (chosen).** The Pi sits by a front door all night and notes when someone comes close, how long they stay, and takes one photo if they stay. In the morning it tells you who stopped by while you were asleep. This one uses the whole Part E pipeline (camera, YOLO, `interpret()`, a log, Qwen), and the camera points at a door, not a bed.  
-<img src="images/Door_watch and Night_palette.jpg" width="500">
+<img src="images/Door_watch_and_Night_palette.jpg" width="500">
 
 **Where it runs.** My classmate lives alone in a studio, so the device watches the hallway outside her door. She knows about it and agreed. The camera faces the door and the space in front of it.  
 
-<img src="images/door_setup.png" alt="Door Watch set up outside the door" width="500">
+<img src="images/door_setup.png" alt="Door Watch set up outside the door" width="300">
 
 **Verplank diagram**
 
@@ -452,6 +452,6 @@ python door_morning.py --delete
 
 ***Include a short video of the whole system***
 
-[https://drive.google.com/file/d/1xinoOYyEnypRQvebepxpyevP9NqrYxc-/view?usp=drive_link](DRIVE_LINK_HERE)
+[Video of the whole system (Google Drive)](https://drive.google.com/file/d/1xinoOYyEnypRQvebepxpyevP9NqrYxc-/view?usp=drive_link)
 
 The video follows one fake night from start to finish: making the Quiet Coyote to arm the device, the countdown and the screen going dark, a person stopping at the door long enough to be photographed, pressing A to end the night, and pressing B to see the photo on the PiTFT.
