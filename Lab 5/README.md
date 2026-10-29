@@ -1,12 +1,12 @@
 # Observant Systems: Overnight Sensation
 
-**Team:** Jacey Hu
+**Team:** 
 
-**Members:** Jacey Hu (ch2296, kakiko1111)
+**Members:** Jacey Hu (ch2296, kakiko1111), , 
 
-**Project name:** _TBD_
+**Project name:** Door Watch
 
-**Acknowledgements:** I used Claude (Anthropic) to help me set up VNC, fix the locale error, troubleshoot the git merge, and edit the English in this write-up.
+**Acknowledgements:** I used Claude (Anthropic) to help me set up VNC, fix the locale error, troubleshoot the git merge, write and debug the Door Watch scripts (`door_watch.py`, `door_morning.py`, `pitft.py`), and draft and edit the English in this write-up.
 
 ---
 
@@ -217,6 +217,8 @@ I ran `yolo_to_qwen.py` through VNC. During the minute, I walked over to the rig
 * Adjust the close/far threshold to fit where the camera actually sits.
 * Ask Qwen a narrow question, like "How many times did someone enter?", instead of an open summary. Or count the events in code and only ask Qwen to put the numbers into a sentence.
 
+---
+
 # Part 2: Overnight Sensation
 
 <details>
@@ -237,13 +239,17 @@ House rules: sample rather than stream (one look every 5 to 30 seconds), and kee
 
 **Ideas I considered**
 
-1. **Posture pillow.** I sleep in strange positions and wake up with a sore neck. An IMU on the pillow would log how long my head is tilted and show a timeline in the morning. I dropped it because it doesn't use the camera pipeline from Part E, and a camera pointed at a bed breaks the house rules.
+1. **Movement alarm.** The camera watches the bed and tracks how the sleeper moves from left to right and how long they stay in bed, and the alarm goes off based on that. It fits the Part E pipeline well, since interpret() already reports left, center and right. I dropped it because it needs a camera pointed at a bed, which breaks the house rules, and a camera watching someone sleep all night felt too invasive.  
+<img src="images/movement_alarm.jpg" width="500">
+
 2. **Night palette.** A color sensor records the light in the room all night, and the morning report is a strip of color: the desk lamp, a phone screen at 1 a.m., the blue hour before sunrise. I liked how it handles a quiet night (one flat color is still an honest answer), but it also skips the YOLO part of the pipeline.
-3. **Door Watch (chosen).** The Pi sits by a front door all night and notes when someone comes close, how long they stay, and takes one photo if they stay. In the morning it tells you who stopped by while you were asleep. This one uses the whole Part E pipeline (camera, YOLO, `interpret()`, a log, Qwen), and the camera points at a door, not a bed.
 
-**Where it runs.** My classmate lives alone in a studio, so the device watches the hallway outside her door. She knows about it and agreed. The camera faces the door and the space in front of it.
+3. **Door Watch (chosen).** The Pi sits by a front door all night and notes when someone comes close, how long they stay, and takes one photo if they stay. In the morning it tells you who stopped by while you were asleep. This one uses the whole Part E pipeline (camera, YOLO, `interpret()`, a log, Qwen), and the camera points at a door, not a bed.  
+<img src="images/Door_watch and Night_palette.jpg" width="500">
 
-<img src="images/door_setup.jpg" alt="Door Watch set up outside the door" width="500">
+**Where it runs.** My classmate lives alone in a studio, so the device watches the hallway outside her door. She knows about it and agreed. The camera faces the door and the space in front of it.  
+
+<img src="images/door_setup.png" alt="Door Watch set up outside the door" width="500">
 
 **Verplank diagram**
 
@@ -258,13 +264,17 @@ House rules: sample rather than stream (one look every 5 to 30 seconds), and kee
 | **Task** | Arm the device. Read the report. Look at who stayed. |
 | **Control** | A hand gesture to start, button A to stop and show the report, button B to flip photos. |
 
-**Storyboard**
+**First storyboard**
 
-<!-- Replace with your sketch: <img src="images/storyboard.png" width="700"> -->
+<img src="images/storyboard2-1.jpg" alt="First storyboard" width="800">
 
-| 1. Bedtime | 2. Hand-off | 3. Night | 4. A visitor | 5. Morning | 6. The report |
-|---|---|---|---|---|---|
-| The screen says "Night shift: show a quiet coyote." | She makes the gesture and holds it. The screen counts down from 10 and goes dark. | The Pi takes one look every 5 seconds. Nothing is saved unless someone shows up. | Someone stops at the door. After 10 seconds the Pi takes one photo and writes it in the log. | She presses A. The screen says "Good morning" and reads the night. | "1 visit, stayed 39s at 02:14." She presses B to see the photo. |
+1. **10 PM.** Before going to bed, she mounts the camera on the outside of her door.
+2. **3 AM.** She is asleep. Someone walks up to the door.
+3. **3 AM.** The camera flashes and takes a photo of the person standing there.
+4. **7 AM.** The Pi sends an alert to her laptop over Wi-Fi, and she sees it while she is having breakfast at her desk.
+5. **Later.** She recognizes the person from the photo and confronts them.
+
+In this version the device is only a camera. Nothing happens between the person and the device before bed, and the morning report shows up on a laptop instead of on the device itself.
 
 ## Prep for Part 2
 
@@ -279,7 +289,22 @@ _TBD_
 
 ***Post your revised storyboard here.***
 
-_TBD_
+<img src="images/storyboard2-2.jpg" alt="Revised storyboard" width="800">
+
+1. **10 PM.** Before bed, she makes a Quiet Coyote at the device on her door. This is the hand-off: the device takes over the night.
+2. **11 PM.** She is asleep. The device sits by the door with its screen off, taking one look every 5 seconds.
+3. **3 AM.** A stranger in a mask stops at her door and looks around.
+4. **3 AM. CLICK!** The stranger has stayed longer than 10 seconds, so the device takes one photo. He notices and is startled.
+5. **3 AM.** He sits down outside the door. She keeps sleeping. The device logs how long he stays, but it doesn't wake her up.
+6. **7 AM.** She presses A on the device, and the screen reads "1 visit at 3 AM" with his photo. "OMG!"
+
+**What changed from the first storyboard**
+
+* **A real hand-off before bed.** In the first version she only set up a camera. Now the night starts with a gesture, so the person and the device meet twice, as the assignment asks.
+* **The report lives on the device.** The first version sent the photo to a laptop. Now the summary and the photo appear on the Mini PiTFT, and everything stays on the Pi.
+* **A morning report, not a night alarm.** The device doesn't wake her when someone comes. It keeps a log and tells her what happened when she is ready to hear it.
+* **Stay time, not just a photo.** Panel 5 is new: what matters is not only who came, but how long they stayed. Someone who walks past isn't photographed. Someone who sits outside the door for minutes is.
+* **No confrontation panel.** The device tells her what happened. What she does about it is her decision, so the story ends when she reads the report.
 
 ## Part G. Design the interaction before
 
@@ -287,7 +312,16 @@ _TBD_
 
 The hand-off is a gesture, not a command. When the script starts, the PiTFT says **"Night shift: show a quiet coyote."** The person makes a Quiet Coyote at the camera (index and pinky up as ears, middle and ring finger touching the thumb as a snout) and holds it for two seconds. The screen shows "Hold it..." with dots filling up, then **"Armed, screen off in 10"**. The 10 seconds are there so the person can close the door and walk away before the watch starts. Then the backlight turns off so the hallway stays dark.
 
-<img src="images/door_pitft_prompt.jpg" alt="Night shift prompt" width="30%"> <img src="images/door_coyote.jpg" alt="Quiet Coyote, hold it" width="30%"> <img src="images/door_pitft_armed.jpg" alt="Armed, screen off in 10" width="30%">
+<img src="images/door_coyote.png" alt="Making a Quiet Coyote at the camera to arm the device" width="450">
+
+What the PiTFT shows during the hand-off:
+
+| Step | Screen |
+|---|---|
+| Waiting | "Night shift" with "show a quiet coyote / to start watching" underneath |
+| Gesture seen | "Hold it..." with green dots that fill up over two seconds |
+| Armed | "Armed" with "screen off in 10", counting down to 1 |
+| Watching | Black, with the backlight off |
 
 I picked the Quiet Coyote because it already means "quiet now" in classrooms, and handing over the night is a way of saying "I'm going to sleep, you take it from here." It also works without touching anything or speaking in a quiet hallway at night.
 
@@ -338,9 +372,9 @@ python door_watch.py
 
 **Fake nights**
 
-<img src="images/door_visitor.jpg" alt="A visitor being detected, with the log" width="600">
+<img src="images/door_visitor.png" alt="Standing in front of the door during a fake night" width="450">
 
-A fake night with one long stop:
+During a fake night I stood in front of the door for longer than 10 seconds so the Pi would take a photo. The log from that run:
 
 ```
 22:02:57 armed, one look every 5s
@@ -379,7 +413,10 @@ In the morning the person presses **button A**. The watch stops, and the PiTFT g
 
 * **Summary screen:** the number of visits and the longest stop, for example "1 visit, longest 39s at 22:02".
 * **Button B** flips through the photos, each labeled with the time and how long the person stayed. **Button A** goes back to the summary.
-<img src="images/door_morning_a.jpg" alt="Pressing A in the morning" width="30%"> <img src="images/door_pitft_report.jpg" alt="Summary on the PiTFT" width="30%"> <img src="images/door_pitft_photo.jpg" alt="Photo on the PiTFT" width="30%">
+
+<img src="images/door_pitft_report.png" alt="Summary screen on the PiTFT" width="45%"> <img src="images/door_pitft_photo.png" alt="A snapshot shown on the PiTFT after pressing B" width="45%">
+
+*Left: the summary screen after pressing A. Right: the snapshot after pressing B, with the time and how long the person stayed in a black bar at the bottom.*
 
 * `door_morning.py` also saves `night_report.png`: a timeline of the whole night where people who passed by are blue marks, people who stayed are orange marks, and the photos sit above the times they were taken.
 
@@ -415,12 +452,6 @@ python door_morning.py --delete
 
 ***Include a short video of the whole system***
 
-[Video of the whole system](VIDEO_LINK_HERE)
+[https://drive.google.com/file/d/1xinoOYyEnypRQvebepxpyevP9NqrYxc-/view?usp=drive_link](DRIVE_LINK_HERE)
 
-<!-- Shot list:
-1. The setup at the door.
-2. The Quiet Coyote, "Hold it...", the countdown, the screen going dark.
-3. Someone walks up and stays (sped up).
-4. Morning: pressing A, the summary on the PiTFT, pressing B for the photo.
-5. night_report.png on the laptop.
--->
+The video follows one fake night from start to finish: making the Quiet Coyote to arm the device, the countdown and the screen going dark, a person stopping at the door long enough to be photographed, pressing A to end the night, and pressing B to see the photo on the PiTFT.
