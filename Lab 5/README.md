@@ -217,8 +217,6 @@ I ran `yolo_to_qwen.py` through VNC. During the minute, I walked over to the rig
 * Adjust the close/far threshold to fit where the camera actually sits.
 * Ask Qwen a narrow question, like "How many times did someone enter?", instead of an open summary. Or count the events in code and only ask Qwen to put the numbers into a sentence.
 
----
-
 # Part 2: Overnight Sensation
 
 <details>
@@ -237,13 +235,45 @@ House rules: sample rather than stream (one look every 5 to 30 seconds), and kee
 
 ***Insert ideas, sketches, Verplank diagrams and storyboards for your night-time interaction here.***
 
-_TBD_
+**Ideas I considered**
+
+1. **Posture pillow.** I sleep in strange positions and wake up with a sore neck. An IMU on the pillow would log how long my head is tilted and show a timeline in the morning. I dropped it because it doesn't use the camera pipeline from Part E, and a camera pointed at a bed breaks the house rules.
+2. **Night palette.** A color sensor records the light in the room all night, and the morning report is a strip of color: the desk lamp, a phone screen at 1 a.m., the blue hour before sunrise. I liked how it handles a quiet night (one flat color is still an honest answer), but it also skips the YOLO part of the pipeline.
+3. **Door Watch (chosen).** The Pi sits by a front door all night and notes when someone comes close, how long they stay, and takes one photo if they stay. In the morning it tells you who stopped by while you were asleep. This one uses the whole Part E pipeline (camera, YOLO, `interpret()`, a log, Qwen), and the camera points at a door, not a bed.
+
+**Where it runs.** My classmate lives alone in a studio, so the device watches the hallway outside her door. She knows about it and agreed. The camera faces the door and the space in front of it.
+
+**Verplank diagram**
+
+| | |
+|---|---|
+| **Idea** | A night guard for your door that reports in the morning instead of waking you up. |
+| **Metaphor** | A doorman who works the night shift. You hand over the night before bed, and he tells you in the morning who came by. |
+| **Model** | Every 5 seconds the camera takes one look. A visit starts when a person appears and ends when nobody has been seen for about 10 seconds. Visits of 10 seconds or more get one photo. |
+| **Display** | The Mini PiTFT (status at night, report in the morning) and a timeline image with photos. |
+| **Error** | A quick walk-past can fall between two looks and be missed. Two visits close together merge into one. The person pressing the button in the morning can look like a visitor. YOLO counts a photo of a person as a person (Part B). |
+| **Scenario** | Before bed, you make a quiet coyote at the camera. In the morning, you press a button and see "2 visits, longest 1m40s at 02:14", then flip through the photos. |
+| **Task** | Arm the device. Read the report. Look at who stayed. |
+| **Control** | A hand gesture to start, button A to stop and show the report, button B to flip photos. |
+
+**Storyboard**
+
+<!-- Replace with your sketch: <img src="images/storyboard.png" width="700"> -->
+
+| 1. Bedtime | 2. Hand-off | 3. Night | 4. A visitor | 5. Morning | 6. The report |
+|---|---|---|---|---|---|
+| The screen says "Night shift: show a quiet coyote." | She makes the gesture and holds it. The screen counts down from 10 and goes dark. | The Pi takes one look every 5 seconds. Nothing is saved unless someone shows up. | Someone stops at the door. After 10 seconds the Pi takes one photo and writes it in the log. | She presses A. The screen says "Good morning" and reads the night. | "1 visit, stayed 39s at 02:14." She presses B to see the photo. |
 
 ## Prep for Part 2
 
 **Feedback on my ideas:**
 
 _TBD_
+
+<!-- Who gave feedback and what they said, e.g.
+- "What happens when nobody comes? Is a blank report useful?"
+- "Will the Pi count you when you walk up to it in the morning?" (this one turned out to be true, see Part H)
+-->
 
 ***Post your revised storyboard here.***
 
@@ -253,7 +283,16 @@ _TBD_
 
 ***Describe the interaction before.***
 
-_TBD_
+The hand-off is a gesture, not a command. When the script starts, the PiTFT says **"Night shift: show a quiet coyote."** The person makes a Quiet Coyote at the camera (index and pinky up as ears, middle and ring finger touching the thumb as a snout) and holds it for two seconds. The screen shows "Hold it..." with dots filling up, then **"Armed, screen off in 10"**. The 10 seconds are there so the person can close the door and walk away before the watch starts. Then the backlight turns off so the hallway stays dark.
+
+I picked the Quiet Coyote because it already means "quiet now" in classrooms, and handing over the night is a way of saying "I'm going to sleep, you take it from here." It also works without touching anything or speaking in a quiet hallway at night.
+
+What I learned in Part C shaped the details:
+
+* **One hand only.** In Part C the landmarks jumped to the wrong hand when two hands were in view. Here, if MediaPipe sees two hands, the device waits instead of guessing whose command it is.
+* **A little forgiveness.** On my first tries the hold timer restarted every time MediaPipe lost the hand for a single frame. Now the gesture has to be gone for half a second before the timer resets.
+* **An easier pinky.** When the ring finger bends to touch the thumb, the pinky gets pulled down with it. My debug output showed `pinky_up: False` almost every time, even though the snout was fine (`middle_to_thumb: 0.03`). I changed the rule so the pinky tip only needs to be above its base knuckle, not its middle joint. After that it worked with one hand.
+* **A backup.** If the gesture doesn't work, button A also arms the device.
 
 ## Part H. Incorporate the observant system
 
@@ -271,7 +310,53 @@ Fake a night first (30 seconds of walking around), then run `morning.py`. When t
 
 ***Screenshots or videos of the running system.***
 
+I built my own version of the overnight and morning scripts on top of `yolo_to_qwen.py`, so the pipeline is the same as Part E:
+
+| Part E | Door Watch (`door_watch.py`) |
+|---|---|
+| camera + YOLO | one look every 5 seconds, `person` class only, confidence 0.6 or higher |
+| `interpret()` | only "someone" or "nobody". No left/right, no close/far |
+| `watch()` logs changes | logs an arrival, a photo, and a departure with how long they stayed |
+| `ask()` sends the log to Qwen | moved to the morning, with a much narrower job (Part I) |
+
+```
+tmux new -s night
+python door_watch.py
+```
+
+**Design decisions, based on what broke in Part E**
+
+* **A coarser interpreter.** In Part E one walk across the room became 14 log lines. At a door the only question is whether someone is there, so that's all `interpret()` reports.
+* **Leaving means gone for a while.** A visit ends only after two empty looks in a row (about 10 seconds). Otherwise one person turning around would count as two visits.
+* **One photo, only if they stay.** A photo is taken when someone has been there for 10 seconds. People walking past aren't photographed.
+* **A higher confidence threshold.** In Part B, a photo of a teddy bear passed as a person at 0.51. I start at 0.6.
+* **Save after every visit.** If the script crashes at 4 a.m., the visits before that are still on disk, and the morning report says the watch stopped early.
+
+**Fake nights**
+
+<!-- <img src="images/door_pitft_armed.jpg" width="300"> <img src="images/door_pitft_report.jpg" width="300"> -->
+
+A fake night with one long stop:
+
+```
+22:02:57 armed, one look every 5s
+22:02:58 someone arrived (0.89)
+22:03:12 still here after 14s, took snapshots/20261028_220312.jpg
+22:03:37 left after 39s
+22:03:41 stopped by button A
+```
+
+**Problems I found while testing**
+
+* **I was counted as a visitor.** When I walked up to press A in the morning, YOLO saw me and logged `someone arrived (0.82)` followed by `left after 0s`. The device only knows that someone is there, not who. Now, if a visit started less than 15 seconds before button A is pressed, it's treated as the owner and dropped (`ignored the last few seconds: that was you pressing A`).
+* **Quick visits can be missed or merged.** With one look every 5 seconds, someone who walks past in 2 or 3 seconds can fall between two looks. And when I walked past and came back within 10 seconds, the two became one 39-second visit. This is the cost of sampling instead of streaming. For a door, I think it's acceptable: the people who matter are the ones who stop.
+* **The screen was busy.** The Pi already runs a service that shows its IP on the PiTFT at boot (`piscreen.service`), so my script got `Device or resource busy`. I stop that service before a night with `sudo systemctl stop piscreen.service`.
+
+**A real night**
+
 _TBD_
+
+<!-- Paste night_log.txt from the real night and a photo of the setup at the door. -->
 
 ## Part I. Design the interaction after
 
@@ -286,10 +371,50 @@ Show the report on the Mini PiTFT, read it aloud with Piper, plot a timeline, or
 
 </details>
 
-_TBD_
+In the morning the person presses **button A**. The watch stops, and the PiTFT goes from "Good morning, reading the night..." to the report:
+
+* **Summary screen:** the number of visits and the longest stop, for example "1 visit, longest 39s at 22:02".
+* **Button B** flips through the photos, each labeled with the time and how long the person stayed. **Button A** goes back to the summary.
+* `door_morning.py` also saves `night_report.png`: a timeline of the whole night where people who passed by are blue marks, people who stayed are orange marks, and the photos sit above the times they were taken.
+
+<!-- <img src="images/night_report.png" width="700"> -->
+
+**What Qwen does, and what it doesn't**
+
+Parts D and E showed me that a 0.8B model invents details and can't read a noisy log. So the counting happens in code: number of visits, how many passed by or stayed, the longest stop, the time window. Qwen only gets those facts and is asked to put them into one or two sentences. Its answer is used only if it passes a check. Otherwise the report uses the sentence written by the code.
+
+The check grew every time Qwen found a new way to be wrong. These are real answers from my test runs:
+
+| Qwen said | Facts | Problem |
+|---|---|---|
+| "The camera recorded two visits during the hour." | 2 visits in 1 minute, longest 20s at 21:16 | No numbers were wrong, but it dropped the important parts and made up "during the hour." |
+| "Two visits occurred at 21:40. The longest visit lasted 39 seconds." | the second visit was at 21:41 | It made both visits sound like they happened at 21:40. |
+| "Two visits were made at 22:02." | 1 visit | Wrong count. My first check missed it, because it found a "1" inside "21:52". |
+
+So now Qwen's sentence is rejected if it adds a time or number that isn't in the facts, if it leaves out the number of visits or the time of the longest one, if it uses a different count word, or if it puts the longest visit's time in a sentence that doesn't say "longest." In practice the code's own sentence ends up in the report more often than Qwen's, and I think that's the right outcome for a security device.
+
+**A night when nothing happens**
+
+If nobody comes, the PiTFT says **"All quiet: no one came to the door"** with the hours it watched, and the report says *"No one came to the door last night (23:42 to 07:31)."* The timeline is drawn empty. Qwen is also rejected here if it doesn't clearly say that nobody came, so "It was a calm night" doesn't pass. If the script stopped early, the report says so, instead of pretending the rest of the night was quiet.
+
+**Deleting the photos**
+
+After the demo, all snapshots are deleted on the Pi:
+
+```
+python door_morning.py --delete
+```
 
 ## Final documentation
 
 ***Include a short video of the whole system***
 
 _TBD_
+
+<!-- Shot list:
+1. The setup at the door.
+2. The Quiet Coyote, "Hold it...", the countdown, the screen going dark.
+3. Someone walks up and stays (sped up).
+4. Morning: pressing A, the summary on the PiTFT, pressing B for the photo.
+5. night_report.png on the laptop.
+-->
