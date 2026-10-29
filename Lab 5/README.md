@@ -243,6 +243,8 @@ House rules: sample rather than stream (one look every 5 to 30 seconds), and kee
 
 **Where it runs.** My classmate lives alone in a studio, so the device watches the hallway outside her door. She knows about it and agreed. The camera faces the door and the space in front of it.
 
+<img src="images/door_setup.jpg" alt="Door Watch set up outside the door" width="500">
+
 **Verplank diagram**
 
 | | |
@@ -284,6 +286,8 @@ _TBD_
 ***Describe the interaction before.***
 
 The hand-off is a gesture, not a command. When the script starts, the PiTFT says **"Night shift: show a quiet coyote."** The person makes a Quiet Coyote at the camera (index and pinky up as ears, middle and ring finger touching the thumb as a snout) and holds it for two seconds. The screen shows "Hold it..." with dots filling up, then **"Armed, screen off in 10"**. The 10 seconds are there so the person can close the door and walk away before the watch starts. Then the backlight turns off so the hallway stays dark.
+
+<img src="images/door_pitft_prompt.jpg" alt="Night shift prompt" width="30%"> <img src="images/door_coyote.jpg" alt="Quiet Coyote, hold it" width="30%"> <img src="images/door_pitft_armed.jpg" alt="Armed, screen off in 10" width="30%">
 
 I picked the Quiet Coyote because it already means "quiet now" in classrooms, and handing over the night is a way of saying "I'm going to sleep, you take it from here." It also works without touching anything or speaking in a quiet hallway at night.
 
@@ -334,7 +338,7 @@ python door_watch.py
 
 **Fake nights**
 
-<!-- <img src="images/door_pitft_armed.jpg" width="300"> <img src="images/door_pitft_report.jpg" width="300"> -->
+<img src="images/door_visitor.jpg" alt="A visitor being detected, with the log" width="600">
 
 A fake night with one long stop:
 
@@ -375,9 +379,11 @@ In the morning the person presses **button A**. The watch stops, and the PiTFT g
 
 * **Summary screen:** the number of visits and the longest stop, for example "1 visit, longest 39s at 22:02".
 * **Button B** flips through the photos, each labeled with the time and how long the person stayed. **Button A** goes back to the summary.
+<img src="images/door_morning_a.jpg" alt="Pressing A in the morning" width="30%"> <img src="images/door_pitft_report.jpg" alt="Summary on the PiTFT" width="30%"> <img src="images/door_pitft_photo.jpg" alt="Photo on the PiTFT" width="30%">
+
 * `door_morning.py` also saves `night_report.png`: a timeline of the whole night where people who passed by are blue marks, people who stayed are orange marks, and the photos sit above the times they were taken.
 
-<!-- <img src="images/night_report.png" width="700"> -->
+<img src="images/night_report.png" alt="Timeline report" width="700">
 
 **What Qwen does, and what it doesn't**
 
@@ -409,7 +415,7 @@ python door_morning.py --delete
 
 ***Include a short video of the whole system***
 
-_TBD_
+[Video of the whole system](VIDEO_LINK_HERE)
 
 <!-- Shot list:
 1. The setup at the door.
