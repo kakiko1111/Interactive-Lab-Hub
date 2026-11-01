@@ -398,6 +398,9 @@ During a fake night I stood in front of the door for longer than 10 seconds so t
 **A real night**
 
 I ran Door Watch for one real night at home, from 01:25 to 09:31 on November 1. I set it up in our kitchen, and I armed it with the Quiet Coyote before going to bed. In the morning I pressed A to end the night.
+<img src="images/night_report_real.png" alt="Timeline report" width="700">
+
+
 
 ```
 01:25:14 armed, one look every 5s
