@@ -280,12 +280,17 @@ In this version the device is only a camera. Nothing happens between the person 
 
 **Feedback on my ideas:**
 
-_TBD_
+Feedback from Rohil Saraf (rs2685): The main concern with the original idea is that it's unclear what the device actually does. Frame 3 of the storyboard just shows a light, but it is not obvious to the reader that it is taking a photo. Slide 4 also makes it seem like the device is uploading the photo to the cloud and the person is then viewing the images from a computer. They also mentioned what would happen if someone just passes in front of the camera briefly, to which we explained that the device won't take a photo.
 
-<!-- Who gave feedback and what they said, e.g.
-- "What happens when nobody comes? Is a blank report useful?"
-- "Will the Pi count you when you walk up to it in the morning?" (this one turned out to be true, see Part H)
--->
+Feedback from Jason Sebastian (js3685): It isn't clear why the person is angry at Slide 5. Also confused about the quiet coyote gesture because Slide 1 makes it look like the user pressed a switch to start the device. They were also wondering if the device uploads photo via WiFi.
+
+Both of them were confused by the same few things, and each one led to a change in the revised storyboard below:
+
+* **It wasn't clear that the device takes a photo.** In the revised version, panel 4 says "CLICK!" and the visitor reacts to it.
+* **It looked like the photo was uploaded to the cloud and viewed on a computer.** Now the report and the photo appear on the device itself, and nothing leaves the Pi.
+* **It looked like the user pressed a switch to start it.** Now panel 1 shows the Quiet Coyote gesture.
+* **It wasn't clear why she was angry at the end.** We removed that panel. The story ends when she reads the report.
+* **What if someone only walks past?** The device only takes a photo when someone stays for 10 seconds or more, so people passing by aren't photographed.
 
 ***Post your revised storyboard here.***
 
