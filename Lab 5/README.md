@@ -431,6 +431,9 @@ I ran Door Watch for one real night at home, from 01:25 to 09:31 on November 1. 
 
 The device logged 22 visits and took 16 photos. Here is what I learned from it.
 
+<img src="images/realnight_report.JPG" alt="The report on the screen in the morning" width="450">
+<img src="images/realnight_photo.JPG" alt="The snapshot of the visitor." width="450">
+
 **1. Almost every "visitor" was us.** The kitchen turned out to be the busiest spot in the apartment at night. My roommate and I kept getting up for water, so most of the 22 visits are the two of us. The first ones at 01:25 are me, still in front of the camera after making the gesture. This is the same problem I found when I pressed A during testing: YOLO only knows that someone is there, not who it is. For a real door watch, the camera has to face a door that only visitors use. A spot that the people who live there walk past all night makes the log useless as a security record.
 
 **2. The clocks went back in the middle of the night.** Daylight saving time ended at 2:00 a.m. on November 1, and the clock went back to 1:00. So the hour from 1:00 to 2:00 happened twice. My script logged plain local times, so when someone arrived at 01:59:33 (daylight time) and left at 01:04:40 (standard time), it calculated that they stayed **−3293 seconds**. Everything from `01:04:40` to `01:41:30` in the log is the second 1 a.m., even though it looks like it happened before 01:59. The night also looked one hour shorter than it really was (8 hours instead of 9).
